@@ -47,6 +47,8 @@
     <h1>洛蒂亚世界架空历史地图</h1>
 
     <p>Welcome to my world.</p>
+    <p id="backendMessage">正在连接洛蒂亚后端……</p>
+    <button id="connectBackend">连接洛蒂亚后端</button>
 
    <img id="historyMap" src="images/map1.png" alt="架空历史地图" width="1375">
 
@@ -98,6 +100,20 @@ eraSelect.addEventListener("change", function() {
     historyMap.src = maps[eraSelect.value];
 
     eraDescription.textContent = descriptions[eraSelect.value];
+});
+
+const connectBackend = document.getElementById("connectBackend");
+
+connectBackend.addEventListener("click", function() {
+    fetch("http://127.0.0.1:8000/")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("backendMessage").textContent = data.message;
+        })
+        .catch(error => {
+            document.getElementById("backendMessage").textContent = "连接后端失败";
+            console.error(error);
+        });
 });
 
 </script>
