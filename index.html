@@ -50,6 +50,39 @@
     <p id="backendMessage">正在连接洛蒂亚后端……</p>
     <button id="connectBackend">连接洛蒂亚后端</button>
 
+    <h2>用户登录</h2>
+
+<form id="loginForm">
+    <div>
+        <label>用户名：</label>
+        <input type="text" id="username" required>
+    </div>
+
+    <div>
+        <label>密码：</label>
+        <input type="password" id="password" required>
+    </div>
+
+    <button type="submit">登录</button>
+</form>
+
+<p id="loginMessage"></p>
+<p id="userInfo"></p>
+
+<h2>用户注册</h2>
+<form id="registerForm">
+    <div>
+        <label>用户名：</label>
+        <input type="text" id="registerUsername" required>
+    </div>
+    <div>
+        <label>密码：</label>
+        <input type="password" id="registerPassword" required>
+    </div>
+    <button type="submit">注册</button>
+</form>
+<p id="registerMessage"></p>
+
    <img id="historyMap" src="images/map1.png" alt="架空历史地图" width="1375">
 
     <h2>世界概览</h2>
@@ -71,6 +104,9 @@
   · 西西里面积两倍于真实，距北非50公里；新撒丁–科西嘉岛1.5–2.5万平方公里；墨西拿海峡宽8–10公里；莱茵河上游平原宽20–30公里；阿尔卑斯三山口意侧通行更易；第勒尼安海半封闭；亚得里亚海北端封闭；黑海新西岸至塞尔维亚东部–斯洛伐克南部；波罗的海近淡水、冬季大面积封冻；英吉利海峡大幅缩窄；伊比利亚银矿在东海岸崖面；坎帕尼亚平原面积翻倍，火山灰土虹吸效应；第勒尼安海夏季午后规律海风；伊斯基亚岛有铁矿；比利牛斯东段开口为缓丘通道、中段有贯穿深谷；东欧台地南缘为全欧最大木材蓄积量森林带；黑海面积扩大，潘诺尼亚冬季大湖效应暴雪；喀尔巴阡山脉完全删除。
 
 </p>
+
+<button onclick="logout()">退出登录</button>
+
 </body>
 
 
@@ -80,6 +116,114 @@
 const eraSelect = document.getElementById("eraSelect");
 const eraName = document.getElementById("eraName");
 const historyMap = document.getElementById("historyMap");
+let accessToken = localStorage.getItem("access_token");
+function logout() {
+    localStorage.removeItem("access_token");
+    accessToken = null;
+
+    document.getElementById("userInfo").textContent = "";
+    document.getElementById("loginMessage").textContent = "";
+    document.getElementById("loginForm").reset();
+
+    alert("已退出登录");
+}
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            document.getElementById("loginMessage").textContent = data.detail;
+            return;
+        }
+
+        accessToken = data.access_token;
+        localStorage.setItem("access_token", accessToken);
+
+        document.getElementById("loginMessage").textContent = "登录成功！";
+        await getUserInfo();
+
+    } catch (error) {
+        document.getElementById("loginMessage").textContent = "连接后端失败";
+        console.error(error);
+    }
+});
+
+// 前端注册功能
+const registerForm = document.getElementById("registerForm");
+
+registerForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("registerUsername").value;
+    const password = document.getElementById("registerPassword").value;
+
+    try {
+        const response = await fetch("http://127.0.0.1:8000/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            document.getElementById("registerMessage").textContent = data.detail;
+            return;
+        }
+
+        document.getElementById("registerMessage").textContent = "注册成功！";
+
+    } catch (error) {
+        document.getElementById("registerMessage").textContent = "连接后端失败";
+        console.error(error);
+    }
+});
+
+async function getUserInfo() {
+    const response = await fetch("http://127.0.0.1:8000/me", {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        document.getElementById("userInfo").textContent = "获取用户信息失败";
+        return;
+    }
+
+    const user = await response.json();
+
+    document.getElementById("userInfo").textContent =
+        "当前登录用户：" + user.username;
+}
+
+if (accessToken) {
+    getUserInfo();
+}
 
 const eraDescription = document.getElementById("eraDescription");
 
