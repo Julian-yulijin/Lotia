@@ -137,7 +137,7 @@ loginForm.addEventListener("submit", async function(event) {
     const password = document.getElementById("password").value;
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/login", {
+        const response = await fetch("http://suffering-socket-people-cosmetics.trycloudflare.com/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -177,7 +177,7 @@ registerForm.addEventListener("submit", async function(event) {
     const password = document.getElementById("registerPassword").value;
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/register", {
+        const response = await fetch("http://suffering-socket-people-cosmetics.trycloudflare.com/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -204,7 +204,7 @@ registerForm.addEventListener("submit", async function(event) {
 });
 
 async function getUserInfo() {
-    const response = await fetch("http://127.0.0.1:8000/me", {
+    const response = await fetch("http://suffering-socket-people-cosmetics.trycloudflare.com/me", {
         headers: {
             "Authorization": `Bearer ${accessToken}`
         }
@@ -249,7 +249,7 @@ eraSelect.addEventListener("change", function() {
 const connectBackend = document.getElementById("connectBackend");
 
 connectBackend.addEventListener("click", function() {
-    fetch("http://127.0.0.1:8000/")
+    fetch("http://suffering-socket-people-cosmetics.trycloudflare.com/")
         .then(response => response.json())
         .then(data => {
             document.getElementById("backendMessage").textContent = data.message;
