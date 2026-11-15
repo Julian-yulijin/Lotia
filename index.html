@@ -1,135 +1,1307 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-CN">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>洛蒂亚世界架空历史地图</title>
+
+    <style>
+        /* ============================================================
+           LOTIA — 世界档案馆视觉系统
+           仅样式与版式，不改动任何脚本与数据逻辑
+           ============================================================ */
+
+        :root {
+            --navy-950: #060d17;
+            --navy-900: #0a1524;
+            --navy-800: #0e1d30;
+
+            --paper-50: #fbf7ee;
+            --paper-100: #f6f0e3;
+            --paper-200: #efe6d4;
+            --paper-300: #e9ddc7;
+
+            --text: #2c261d;
+            --text-soft: #4a4133;
+            --text-mute: #7b6f5b;
+
+            --brass: #c3a268;
+            --brass-light: #e3ca9a;
+            --brass-deep: #9b7a44;
+
+            --line-dark: rgba(195, 162, 104, 0.28);
+            --line-dark-strong: rgba(195, 162, 104, 0.55);
+            --line-paper: rgba(141, 110, 66, 0.26);
+            --line-paper-strong: rgba(141, 110, 66, 0.46);
+
+            --serif: "Songti SC", "STSong", "Noto Serif SC", "Source Han Serif SC", "SimSun", Georgia, "Times New Roman", serif;
+            --sans: "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+            --shadow-card: 0 34px 70px -36px rgba(0, 0, 0, 0.78);
+            --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--sans);
+            font-size: 16px;
+            line-height: 1.75;
+            color: #dbe4ee;
+            background-color: var(--navy-950);
+            background-image:
+                radial-gradient(1100px 620px at 12% -8%, rgba(40, 74, 110, 0.55), transparent 65%),
+                radial-gradient(900px 520px at 92% 4%, rgba(195, 162, 104, 0.10), transparent 65%),
+                linear-gradient(180deg, #0a1524 0%, #0b1726 45%, #070f1a 100%);
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* 细密经纬网，压在背景之上、内容之下 */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(195, 162, 104, 0.045) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(195, 162, 104, 0.045) 1px, transparent 1px);
+            background-size: 96px 96px;
+            -webkit-mask-image: radial-gradient(circle at 50% 18%, #000 0%, transparent 78%);
+            mask-image: radial-gradient(circle at 50% 18%, #000 0%, transparent 78%);
+        }
+
+        ::selection {
+            background: rgba(195, 162, 104, 0.35);
+            color: #1c1408;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================== HERO ============================== */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid var(--line-dark);
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(195, 162, 104, 0.85), transparent);
+            z-index: 2;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 50% 118%, rgba(195, 162, 104, 0.10), transparent 46%),
+                repeating-radial-gradient(circle at 50% 118%, rgba(195, 162, 104, 0.055) 0 1px, transparent 1px 48px);
+            -webkit-mask-image: linear-gradient(180deg, #000 0%, transparent 92%);
+            mask-image: linear-gradient(180deg, #000 0%, transparent 92%);
+        }
+
+        .hero__inner {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 76px 32px 120px;
+            text-align: center;
+        }
+
+        /* 印章式品牌标记（纯装饰） */
+        .hero__inner::before {
+            content: "洛";
+            display: grid;
+            place-items: center;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 30px;
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            line-height: 1;
+            color: var(--brass-light);
+            border: 1px solid rgba(195, 162, 104, 0.55);
+            background: radial-gradient(circle at 32% 26%, rgba(195, 162, 104, 0.22), rgba(195, 162, 104, 0.04) 70%);
+            box-shadow: inset 0 0 0 3px rgba(195, 162, 104, 0.10), 0 12px 32px -16px rgba(0, 0, 0, 0.9);
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3.35rem);
+            line-height: 1.3;
+            letter-spacing: 0.12em;
+            color: #f7f1e3;
+            text-shadow: 0 2px 26px rgba(0, 0, 0, 0.4);
+            text-wrap: balance;
+        }
+
+        .hero h1::after {
+            content: "";
+            display: block;
+            width: 104px;
+            height: 1px;
+            margin: 26px auto 0;
+            background: linear-gradient(90deg, transparent, var(--brass), transparent);
+        }
+
+        .hero__sub {
+            margin: 20px 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            font-family: Georgia, "Times New Roman", var(--serif);
+            font-style: italic;
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            color: #b7c5d6;
+        }
+
+        .hero__sub::before,
+        .hero__sub::after {
+            content: "";
+            width: 56px;
+            height: 1px;
+            flex: none;
+        }
+
+        .hero__sub::before {
+            background: linear-gradient(90deg, transparent, var(--line-dark-strong));
+        }
+
+        .hero__sub::after {
+            background: linear-gradient(90deg, var(--line-dark-strong), transparent);
+        }
+
+        .hero__status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 100%;
+            margin-top: 38px;
+            padding: 10px 12px 10px 18px;
+            border: 1px solid var(--line-dark);
+            border-radius: 999px;
+            background: rgba(5, 12, 22, 0.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            -webkit-backdrop-filter: blur(8px);
+            backdrop-filter: blur(8px);
+        }
+
+        #backendMessage {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.82rem;
+            letter-spacing: 0.06em;
+            color: #aab9ca;
+            text-align: left;
+        }
+
+        #backendMessage::before {
+            content: "";
+            flex: none;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--brass);
+            box-shadow: 0 0 0 4px rgba(195, 162, 104, 0.16);
+            animation: lotiaPulse 2.8s ease-in-out infinite;
+        }
+
+        @keyframes lotiaPulse {
+            0%, 100% {
+                opacity: 0.45;
+                transform: scale(0.9);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        #connectBackend {
+            padding: 0.55rem 1.15rem;
+            font-size: 0.76rem;
+            letter-spacing: 0.12em;
+            border-radius: 999px;
+            border: 1px solid var(--line-dark-strong);
+            background: rgba(195, 162, 104, 0.08);
+            color: var(--brass-light);
+        }
+
+        #connectBackend:hover {
+            background: var(--brass);
+            border-color: var(--brass);
+            color: #171005;
+        }
+
+        /* ============================== 版心 ============================== */
+
+        .archive {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            margin: -80px auto 0;
+            padding: 0 32px 96px;
+            display: flex;
+            flex-direction: column;
+            gap: 38px;
+        }
+
+        .archive > * {
+            animation: lotiaRise 0.8s var(--ease) both;
+        }
+
+        .archive > :nth-child(2) {
+            animation-delay: 0.06s;
+        }
+
+        .archive > :nth-child(3) {
+            animation-delay: 0.12s;
+        }
+
+        .archive > :nth-child(4) {
+            animation-delay: 0.18s;
+        }
+
+        .archive > :nth-child(5) {
+            animation-delay: 0.24s;
+        }
+
+        .archive > :nth-child(6) {
+            animation-delay: 0.28s;
+        }
+
+        @keyframes lotiaRise {
+            from {
+                opacity: 0;
+                transform: translateY(14px);
+            }
+            to {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* ============================== 纸本面板 ============================== */
+
+        .panel {
+            position: relative;
+            padding: 44px 46px;
+            border: 1px solid rgba(195, 162, 104, 0.45);
+            border-radius: 3px;
+            background:
+                radial-gradient(120% 90% at 0% 0%, rgba(255, 255, 255, 0.55), transparent 55%),
+                linear-gradient(180deg, #f9f4e9 0%, #f2e9d8 60%, #ece0ca 100%);
+            color: var(--text);
+            text-align: left;
+            box-shadow:
+                var(--shadow-card),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.45),
+                inset 0 0 0 6px rgba(255, 255, 255, 0.22),
+                inset 0 0 0 7px rgba(141, 110, 66, 0.16);
+        }
+
+        .panel::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            background-image: radial-gradient(rgba(110, 85, 50, 0.05) 0.6px, transparent 0.6px);
+            background-size: 4px 4px;
+            opacity: 0.7;
+        }
+
+        .panel h2 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: var(--serif);
+            font-weight: 700;
+            font-size: clamp(1.15rem, 2vw, 1.4rem);
+            line-height: 1.45;
+            letter-spacing: 0.12em;
+            color: #241d12;
+        }
+
+        .panel h2::before {
+            content: "";
+            flex: none;
+            width: 8px;
+            height: 8px;
+            background: var(--brass-deep);
+            transform: rotate(45deg);
+            box-shadow: 0 0 0 3px rgba(155, 122, 68, 0.14);
+        }
+
+        .section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 24px;
+            padding-bottom: 16px;
+            margin-bottom: 26px;
+            border-bottom: 1px solid var(--line-paper);
+        }
+
+        .section-head h2 {
+            margin: 0;
+            font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+        }
+
+        /* ============================== 断代选择 ============================== */
+
+        .era-panel__head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 26px;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--line-paper);
+        }
+
+        .era-panel__head h2 {
+            font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+        }
+
+        .select-wrap {
+            position: relative;
+            min-width: 260px;
+        }
+
+        .select-wrap select {
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 0.7rem 2.8rem 0.7rem 1rem;
+            font-family: var(--serif);
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            color: #3c2f1e;
+            background-color: #fffdf7;
+            cursor: pointer;
+        }
+
+        .select-wrap::after {
+            content: "";
+            position: absolute;
+            right: 1.1rem;
+            top: 50%;
+            width: 7px;
+            height: 7px;
+            border-right: 1.5px solid #6d5736;
+            border-bottom: 1.5px solid #6d5736;
+            transform: translateY(-70%) rotate(45deg);
+            pointer-events: none;
+        }
+
+        .era-current {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.55rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            color: #7d6f58;
+        }
+
+        #eraName {
+            display: inline-block;
+            padding: 0.18rem 0.65rem;
+            border: 1px solid rgba(141, 110, 66, 0.4);
+            background: rgba(195, 162, 104, 0.16);
+            color: #5b4522;
+            font-family: var(--serif);
+            font-size: 0.92rem;
+            letter-spacing: 0.12em;
+            line-height: 1.5;
+        }
+
+        #eraDescription {
+            margin: 14px 0 0;
+            padding-left: 18px;
+            border-left: 2px solid rgba(155, 122, 68, 0.5);
+            font-family: var(--serif);
+            font-size: clamp(1.02rem, 2vw, 1.18rem);
+            line-height: 1.95;
+            letter-spacing: 0.04em;
+            color: #493f2f;
+        }
+
+        /* ============================== 地图展陈 ============================== */
+
+        .map-plate {
+            position: relative;
+        }
+
+        .map-frame {
+            position: relative;
+            margin: 0;
+            padding: 16px;
+            background: linear-gradient(180deg, #faf5ea, #ece0c9);
+            border: 1px solid rgba(195, 162, 104, 0.55);
+            border-radius: 2px;
+            box-shadow:
+                var(--shadow-card),
+                inset 0 0 0 5px #f8f2e6,
+                inset 0 0 0 6px rgba(141, 110, 66, 0.22);
+        }
+
+        .map-frame::before,
+        .map-frame::after {
+            content: "";
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            pointer-events: none;
+        }
+
+        .map-frame::before {
+            top: 5px;
+            left: 5px;
+            border-top: 2px solid var(--brass);
+            border-left: 2px solid var(--brass);
+        }
+
+        .map-frame::after {
+            right: 5px;
+            bottom: 5px;
+            border-right: 2px solid var(--brass);
+            border-bottom: 2px solid var(--brass);
+        }
+
+        #historyMap {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #e6dcc7;
+            border: 1px solid rgba(141, 110, 66, 0.35);
+        }
+
+        /* ============================== 世界概览 ============================== */
+
+        .overview__head {
+            position: relative;
+            padding-bottom: 18px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--line-paper);
+        }
+
+        .overview__head h2 {
+            position: relative;
+            z-index: 1;
+            font-size: clamp(1.6rem, 3vw, 2.05rem);
+            letter-spacing: 0.14em;
+        }
+
+        /* 原文件中的第二个同名标题完整保留，作为“套印重影”装饰层 */
+        .overview__head h2 + h2 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 0;
+            margin: 0;
+            white-space: nowrap;
+            color: var(--brass);
+            opacity: 0.28;
+            transform: translate(7px, 6px);
+            pointer-events: none;
+        }
+
+        .overview__text {
+            margin: 0;
+            font-size: 0.96rem;
+            line-height: 2.05;
+            text-align: justify;
+            white-space: pre-line;
+            color: #3d3527;
+            column-count: 1;
+        }
+
+        /* ============================== 表单基元 ============================== */
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            color: #7a6c56;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 0.72rem 0.85rem;
+            font-family: var(--sans);
+            font-size: 0.94rem;
+            line-height: 1.7;
+            color: var(--text);
+            background: #fffdf8;
+            border: 1px solid rgba(141, 110, 66, 0.42);
+            border-radius: 2px;
+            box-shadow: inset 0 1px 2px rgba(80, 60, 30, 0.05);
+            transition:
+                border-color 0.22s var(--ease),
+                box-shadow 0.22s var(--ease),
+                background-color 0.22s var(--ease);
+        }
+
+        input[type="text"]:hover,
+        input[type="password"]:hover,
+        textarea:hover,
+        select:hover {
+            border-color: rgba(141, 110, 66, 0.68);
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--brass-deep);
+            background: #ffffff;
+            box-shadow:
+                0 0 0 3px rgba(195, 162, 104, 0.2),
+                inset 0 1px 2px rgba(80, 60, 30, 0.04);
+        }
+
+        textarea {
+            min-height: 170px;
+            resize: vertical;
+        }
+
+        select[multiple] {
+            height: 132px;
+            padding: 0.35rem;
+            overflow-y: auto;
+            cursor: pointer;
+        }
+
+        select[multiple] option {
+            padding: 0.5rem 0.6rem;
+            border-radius: 2px;
+            color: #3d3426;
+        }
+
+        select[multiple] option:checked {
+            background-color: #d8bd8d;
+            background-image: linear-gradient(180deg, #e0c79b, #cfb17c);
+            color: #241a09;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        /* ============================== 按钮 ============================== */
+
+        button {
+            font-family: var(--sans);
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            line-height: 1;
+            padding: 0.78rem 1.35rem;
+            border-radius: 2px;
+            border: 1px solid rgba(141, 110, 66, 0.5);
+            background: rgba(255, 253, 247, 0.6);
+            color: #5a4526;
+            cursor: pointer;
+            transition:
+                background-color 0.22s var(--ease),
+                color 0.22s var(--ease),
+                border-color 0.22s var(--ease),
+                box-shadow 0.22s var(--ease),
+                transform 0.12s var(--ease);
+        }
+
+        button:hover {
+            background: #5a4526;
+            border-color: #5a4526;
+            color: #f7f0df;
+            box-shadow: 0 10px 22px -14px rgba(70, 50, 25, 0.9);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button:focus-visible {
+            outline: 2px solid var(--brass-deep);
+            outline-offset: 2px;
+        }
+
+        form button[type="submit"],
+        #loadMyStories {
+            background: linear-gradient(180deg, #57422a, #3a2a17);
+            border-color: #3a2a17;
+            color: #f5e9d1;
+            box-shadow: 0 12px 26px -16px rgba(40, 25, 10, 0.95);
+        }
+
+        form button[type="submit"]:hover,
+        #loadMyStories:hover {
+            background: linear-gradient(180deg, #6b5234, #473420);
+            border-color: #473420;
+            color: #fff6e4;
+        }
+
+        /* ============================== 登录 / 注册 ============================== */
+
+        .account__grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .account__card {
+            padding: 28px 26px 24px;
+            border: 1px solid var(--line-paper);
+            background: rgba(255, 253, 247, 0.5);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+        }
+
+        .account__card h2 {
+            font-size: 1.2rem;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--line-paper);
+        }
+
+        .account__footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 18px;
+            border-top: 1px solid var(--line-paper);
+        }
+
+        #loginMessage,
+        #registerMessage,
+        #storyMessage,
+        #userInfo {
+            margin: 16px 0 0;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            color: #6a4a20;
+        }
+
+        #loginMessage:empty,
+        #registerMessage:empty,
+        #storyMessage:empty,
+        #userInfo:empty {
+            display: none;
+        }
+
+        #loginMessage:not(:empty),
+        #registerMessage:not(:empty),
+        #storyMessage:not(:empty),
+        #userInfo:not(:empty) {
+            padding: 10px 14px;
+            border-left: 2px solid var(--brass-deep);
+            background: rgba(195, 162, 104, 0.13);
+        }
+
+        /* ============================== 故事投稿 ============================== */
+
+        .story-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0 28px;
+        }
+
+        .field--full {
+            grid-column: 1 / -1;
+        }
+
+        .story-form .form-actions {
+            margin-top: 2px;
+        }
+
+        /* ============================== 我的故事 ============================== */
+
+        #myStories:empty {
+            display: none;
+        }
+
+        #myStories > div {
+            padding: 22px 0;
+            border-top: 1px solid var(--line-paper);
+        }
+
+        #myStories > div:first-child {
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        #myStories > div > h3 {
+            margin: 0 0 0.55rem;
+            font-family: var(--serif);
+            font-size: 1.16rem;
+            line-height: 1.5;
+            letter-spacing: 0.06em;
+            color: #241d12;
+        }
+
+        #myStories > div > p {
+            margin: 0.15rem 0;
+            font-size: 0.88rem;
+            line-height: 1.85;
+            color: #4c4232;
+        }
+
+        #myStories > div > p:nth-of-type(1),
+        #myStories > div > p:nth-of-type(2) {
+            display: inline-block;
+            margin: 0 1.3rem 0.5rem 0;
+            font-size: 0.73rem;
+            letter-spacing: 0.1em;
+            color: #84765e;
+        }
+
+        #myStories > div > p:nth-of-type(3) {
+            color: #3f3729;
+        }
+
+        #myStories > div > button {
+            margin: 14px 10px 0 0;
+            padding: 0.58rem 1rem;
+            font-size: 0.74rem;
+        }
+
+        /* ============================== 管理员审核中心（脚本生成） ============================== */
+
+        #adminPanel {
+            position: relative;
+            z-index: 1;
+            width: calc(100% - 64px) !important;
+            max-width: 1116px !important;
+            margin: 0 auto 36px !important;
+            padding: 40px !important;
+            border: 1px solid var(--line-dark) !important;
+            border-radius: 3px !important;
+            background:
+                radial-gradient(120% 140% at 100% 0%, rgba(195, 162, 104, 0.10), transparent 55%),
+                linear-gradient(180deg, #0f2035 0%, #0a1626 100%) !important;
+            color: #c9d5e2 !important;
+            box-shadow:
+                0 30px 70px -40px rgba(0, 0, 0, 0.9),
+                inset 0 0 0 1px rgba(195, 162, 104, 0.08);
+        }
+
+        #adminPanel > h2 {
+            margin: 0 0 20px;
+            padding-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: var(--serif);
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #f4ebd9;
+            border-bottom: 1px solid var(--line-dark);
+        }
+
+        #adminPanel > h2::before {
+            content: "";
+            flex: none;
+            width: 9px;
+            height: 9px;
+            background: var(--brass);
+            transform: rotate(45deg);
+            box-shadow: 0 0 0 3px rgba(195, 162, 104, 0.14);
+        }
+
+        #adminPanel > button {
+            border: 1px solid var(--line-dark-strong);
+            background: rgba(195, 162, 104, 0.08);
+            color: var(--brass-light);
+        }
+
+        #adminPanel > button:hover {
+            background: var(--brass);
+            border-color: var(--brass);
+            color: #1a1206;
+        }
+
+        #adminPanel > div {
+            margin-top: 26px;
+            color: #aebccb;
+            font-size: 0.9rem;
+        }
+
+        #adminPanel > div > div {
+            margin-top: 20px !important;
+            padding: 24px !important;
+            border: 1px solid rgba(195, 162, 104, 0.2) !important;
+            border-radius: 2px !important;
+            background: rgba(255, 255, 255, 0.035);
+        }
+
+        #adminPanel > div > div > h3 {
+            margin: 0 0 0.6rem;
+            font-family: var(--serif);
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            color: #f2e9d8;
+        }
+
+        #adminPanel > div > div > p {
+            margin: 0.35rem 0;
+            font-size: 0.86rem;
+            line-height: 1.8;
+            color: #a9b8c9;
+        }
+
+        #adminPanel > div > div > p:nth-of-type(1) {
+            font-size: 0.76rem;
+            letter-spacing: 0.06em;
+            color: #8ea0b4;
+        }
+
+        #adminPanel > div > div > p:nth-of-type(3) {
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            color: #7f91a6;
+        }
+
+        #adminPanel textarea {
+            background: rgba(4, 10, 18, 0.55);
+            border: 1px solid rgba(195, 162, 104, 0.28);
+            color: #e6eef7;
+            font-size: 0.88rem;
+        }
+
+        #adminPanel textarea::placeholder {
+            color: #6f8296;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+        }
+
+        #adminPanel textarea:focus {
+            outline: none;
+            border-color: var(--brass);
+            background: rgba(4, 10, 18, 0.78);
+            box-shadow: 0 0 0 3px rgba(195, 162, 104, 0.16);
+        }
+
+        #adminPanel > div > div > button {
+            padding: 0.62rem 1.05rem;
+            font-size: 0.76rem;
+        }
+
+        #adminPanel > div > div > button:nth-of-type(1) {
+            background: linear-gradient(180deg, #c8a76f, #a4834d);
+            border-color: #a4834d;
+            color: #201505;
+        }
+
+        #adminPanel > div > div > button:nth-of-type(1):hover {
+            background: linear-gradient(180deg, #ddbe8a, #b89355);
+            border-color: #b89355;
+            color: #1b1204;
+        }
+
+        #adminPanel > div > div > button:nth-of-type(2) {
+            background: transparent;
+            border-color: rgba(196, 112, 92, 0.55);
+            color: #e0a894;
+        }
+
+        #adminPanel > div > div > button:nth-of-type(2):hover {
+            background: rgba(190, 90, 70, 0.18);
+            border-color: rgba(212, 130, 110, 0.8);
+            color: #ffd9cc;
+        }
+
+        /* ============================== 公开故事（脚本生成） ============================== */
+
+        #publicStories {
+            position: relative;
+            z-index: 1;
+            width: calc(100% - 64px) !important;
+            max-width: 1116px !important;
+            margin: 0 auto 80px !important;
+            padding: 44px 44px 36px !important;
+            border: 1px solid rgba(195, 162, 104, 0.5) !important;
+            border-radius: 3px !important;
+            background:
+                radial-gradient(120% 100% at 0% 0%, rgba(255, 255, 255, 0.5), transparent 55%),
+                linear-gradient(180deg, #f8f3e8, #ece1cc) !important;
+            color: var(--text);
+            box-shadow: var(--shadow-card);
+        }
+
+        #publicStories > h2 {
+            margin: 0;
+            padding-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            font-family: var(--serif);
+            font-size: clamp(1.4rem, 2.6vw, 1.75rem);
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #241d12;
+            border-bottom: 1px solid var(--line-paper);
+        }
+
+        #publicStories > h2::before {
+            content: "";
+            flex: none;
+            width: 9px;
+            height: 9px;
+            background: var(--brass-deep);
+            transform: rotate(45deg);
+            box-shadow: 0 0 0 3px rgba(155, 122, 68, 0.14);
+        }
+
+        #publicStories article {
+            margin-top: 20px !important;
+            padding: 26px !important;
+            border: 1px solid var(--line-paper) !important;
+            border-radius: 2px !important;
+            background: rgba(255, 253, 247, 0.55);
+        }
+
+        #publicStories article h3 {
+            margin: 0 0 0.6rem;
+            font-family: var(--serif);
+            font-size: 1.16rem;
+            line-height: 1.5;
+            letter-spacing: 0.06em;
+            color: #241d12;
+        }
+
+        #publicStories article p {
+            margin: 0.3rem 0 0;
+            font-size: 0.9rem;
+            line-height: 1.9;
+            color: #4c4232;
+        }
+
+        #publicStories article button {
+            margin-top: 16px;
+            padding: 0.62rem 1.05rem;
+            font-size: 0.74rem;
+        }
+
+        #publicStories::after {
+            content: "LOTIA";
+            display: block;
+            margin-top: 38px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line-paper);
+            text-align: center;
+            font-family: var(--serif);
+            font-size: 0.7rem;
+            letter-spacing: 0.6em;
+            text-indent: 0.6em;
+            color: #8a7654;
+        }
+
+        /* ============================== 响应式 ============================== */
+
+        @media (min-width: 1080px) {
+            .overview__text {
+                column-count: 2;
+                column-gap: 52px;
+                column-rule: 1px solid rgba(141, 110, 66, 0.22);
+            }
+        }
+
+        @media (max-width: 980px) {
+            .hero__inner {
+                padding: 64px 24px 104px;
+            }
+
+            .archive {
+                margin-top: -64px;
+                padding: 0 22px 76px;
+                gap: 30px;
+            }
+
+            .panel {
+                padding: 34px 28px;
+            }
+
+            .account__grid {
+                grid-template-columns: 1fr;
+                gap: 22px;
+            }
+
+            .story-form {
+                grid-template-columns: 1fr;
+            }
+
+            .field--full {
+                grid-column: auto;
+            }
+
+            #adminPanel {
+                width: calc(100% - 44px) !important;
+                padding: 32px 26px !important;
+            }
+
+            #publicStories {
+                width: calc(100% - 44px) !important;
+                padding: 34px 28px 30px !important;
+            }
+        }
+
+        @media (max-width: 640px) {
+            body {
+                font-size: 15px;
+            }
+
+            .hero__inner {
+                padding: 48px 18px 92px;
+            }
+
+            .hero__inner::before {
+                width: 52px;
+                height: 52px;
+                margin-bottom: 24px;
+                font-size: 1.4rem;
+            }
+
+            .hero h1 {
+                font-size: clamp(1.75rem, 7.4vw, 2.4rem);
+                letter-spacing: 0.1em;
+            }
+
+            .hero h1::after {
+                margin-top: 20px;
+            }
+
+            .hero__sub {
+                gap: 12px;
+                font-size: 0.82rem;
+                letter-spacing: 0.06em;
+            }
+
+            .hero__sub::before,
+            .hero__sub::after {
+                width: 28px;
+            }
+
+            .hero__status {
+                width: 100%;
+                justify-content: flex-start;
+                padding: 12px 14px;
+                gap: 12px;
+                border-radius: 4px;
+            }
+
+            .archive {
+                margin-top: -48px;
+                padding: 0 16px 60px;
+                gap: 24px;
+            }
+
+            .panel {
+                padding: 26px 20px;
+            }
+
+            .panel h2 {
+                font-size: 1.12rem;
+                letter-spacing: 0.08em;
+            }
+
+            .section-head {
+                gap: 14px;
+            }
+
+            .era-panel__head {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+
+            .select-wrap {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .overview__head h2 {
+                font-size: 1.5rem;
+            }
+
+            .overview__head h2 + h2 {
+                transform: translate(4px, 4px);
+            }
+
+            .overview__text {
+                font-size: 0.92rem;
+                line-height: 1.95;
+            }
+
+            .account__card {
+                padding: 22px 18px;
+            }
+
+            .form-actions button {
+                width: 100%;
+            }
+
+            .map-frame {
+                padding: 9px;
+            }
+
+            .map-frame::before,
+            .map-frame::after {
+                width: 18px;
+                height: 18px;
+            }
+
+            input[type="text"],
+            input[type="password"],
+            textarea,
+            select {
+                font-size: 16px;
+            }
+
+            select[multiple] {
+                height: auto;
+                min-height: 126px;
+            }
+
+            #adminPanel {
+                width: calc(100% - 32px) !important;
+                padding: 24px 18px !important;
+            }
+
+            #adminPanel > div > div {
+                padding: 18px !important;
+            }
+
+            #publicStories {
+                width: calc(100% - 32px) !important;
+                padding: 26px 18px 20px !important;
+                margin-bottom: 56px !important;
+            }
+
+            #publicStories article {
+                padding: 20px !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+            }
+        }
+    </style>
 </head>
-
-
-<h2>选择历史时期</h2>
-
-<select id="eraSelect">
-    <option value="第一时期">第一时期</option>
-    <option value="第二时期">第二时期</option>
-    <option value="第三时期">第三时期</option>
-</select>
-
-<p>当前历史时期：<span id="eraName">第一时期</span></p>
-
-<p id="eraDescription">诸国割据，百家争鸣。</p>
-
-<style>
-    body {
-        background-color: #f2efe6;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin: 30px;
-    }
-
-    h1 {
-        color: #463b2d;
-    }
-
-    h2 {
-        color: #6b5138;
-    }
-
-    img {
-        max-width: 100%;
-        height: auto;
-    }
-</style>
-
 
 <body>
 
-    <h1>洛蒂亚世界架空历史地图</h1>
+    <div class="page">
 
-    <p>Welcome to my world.</p>
-    <p id="backendMessage">正在连接洛蒂亚后端……</p>
-    <button id="connectBackend">连接洛蒂亚后端</button>
+        <header class="hero">
+            <div class="hero__inner">
+                <h1>洛蒂亚世界架空历史地图</h1>
 
-    <h2>用户登录</h2>
+                <p class="hero__sub">Welcome to my world.</p>
 
-<form id="loginForm">
-    <div>
-        <label>用户名：</label>
-        <input type="text" id="username" required>
-    </div>
+                <div class="hero__status">
+                    <p id="backendMessage">正在连接洛蒂亚后端……</p>
+                    <button id="connectBackend">连接洛蒂亚后端</button>
+                </div>
+            </div>
+        </header>
 
-    <div>
-        <label>密码：</label>
-        <input type="password" id="password" required>
-    </div>
+        <main class="archive">
 
-    <button type="submit">登录</button>
-</form>
+            <section class="panel era-panel">
+                <div class="era-panel__head">
+                    <h2>选择历史时期</h2>
+                    <div class="select-wrap">
+                        <select id="eraSelect">
+                            <option value="第一时期">第一时期</option>
+                            <option value="第二时期">第二时期</option>
+                            <option value="第三时期">第三时期</option>
+                        </select>
+                    </div>
+                </div>
 
-<p id="loginMessage"></p>
-<p id="userInfo"></p>
+                <p class="era-current">当前历史时期：<span id="eraName">第一时期</span></p>
 
-<h2>故事投稿</h2>
+                <p id="eraDescription">诸国割据，百家争鸣。</p>
+            </section>
 
-<form id="storyForm">
-    <div>
-        <label>故事标题：</label>
-        <input type="text" id="storyTitle" required>
-    </div>
+            <section class="map-plate">
+                <figure class="map-frame">
+                    <img id="historyMap" src="images/map1.png" alt="架空历史地图" width="1375">
+                </figure>
+            </section>
 
-    <div>
-        <label>故事正文：</label>
-        <textarea id="storyContent" required></textarea>
-    </div>
+            <section class="panel overview">
+                <div class="overview__head">
+                    <h2>世界概览</h2>
+                    <h2>世界概览</h2>
+                </div>
 
-    <div>
-        <label>关联地点：</label>
-        <select id="storyLocations" multiple>
-            <option value="1">卡帕多西亚</option>
-            <option value="2">银谷悬瀑</option>
-            <option value="3">霍伊斯山地</option>
-        </select>
-    </div>
-
-    <div>
-        <label>关联历史时期：</label>
-        <select id="storyPeriods" multiple>
-            <option value="1">第一时期</option>
-            <option value="2">第二时期</option>
-            <option value="3">第三时期</option>
-        </select>
-    </div>
-
-    <button type="submit">提交故事</button>
-</form>
-
-<p id="storyMessage"></p>
-
-<h2>我的故事</h2>
-
-<button id="loadMyStories">查看我的故事</button>
-
-<div id="myStories"></div>
-
-<h2>用户注册</h2>
-<form id="registerForm">
-    <div>
-        <label>用户名：</label>
-        <input type="text" id="registerUsername" required>
-    </div>
-    <div>
-        <label>密码：</label>
-        <input type="password" id="registerPassword" required>
-    </div>
-    <button type="submit">注册</button>
-</form>
-<p id="registerMessage"></p>
-
-   <img id="historyMap" src="images/map1.png" alt="架空历史地图" width="1375">
-
-    <h2>世界概览</h2>
- <h2>世界概览</h2>
-<p>· 意大利半岛：轮廓不变，亚平宁山脉纵贯。波河平原多沼泽，河流分叉形成天然水道，沙质河堤构成可定居的“河中岛”。坎帕尼亚平原面积翻倍，火山灰土垂直渗透性佳，暴雨被土壤吸收导入深层地下水，旱季作物可汲取深层水。那不勒斯湾为深水良港群，伊斯基亚、普罗奇达、卡普里岛成链。伊斯基亚岛有浅层易采铁矿。
+                <p class="overview__text">· 意大利半岛：轮廓不变，亚平宁山脉纵贯。波河平原多沼泽，河流分叉形成天然水道，沙质河堤构成可定居的“河中岛”。坎帕尼亚平原面积翻倍，火山灰土垂直渗透性佳，暴雨被土壤吸收导入深层地下水，旱季作物可汲取深层水。那不勒斯湾为深水良港群，伊斯基亚、普罗奇达、卡普里岛成链。伊斯基亚岛有浅层易采铁矿。
 · 西西里岛：面积加倍，距北非约50公里。撒丁与科西嘉抹除，原址附近生新岛，面积1.5–2.5万平方公里。墨西拿海峡宽8–10公里，暗礁密布、潮汐复杂，永久性巨型漩涡群与剪切流使航行极危险；海峡上空因第勒尼安海蒸发水汽与盐沫交汇，几乎每日下午定时爆发剧烈局地雷暴，称“暗礁风暴墙”。
 · 阿尔卑斯山：略高，北陡南缓。博尔扎诺、大圣伯纳德、滨海阿尔卑斯三山口，意侧通行易。北壁冰川作用更强，冰川末端发育巨型冰洞与冰拱门，内闪蓝光，俯视北侧深谷。
 · 第勒尼安海：半封闭，南有宽出口。夏季白天，阿尔卑斯与亚平宁热力环流形成规律午后海风（正午起、傍晚散），为近岸航行及海军训练提供可靠动力。夏秋之交冷空气侵入时，全海面雷暴单体密布如“沸腾的粥”，闪电亮如白昼。
@@ -143,15 +1315,118 @@
 · 波罗的海：近淡水，与大西洋交换极弱，盐度极低，冰点近0°C。冬季大面积封冻（北部冰层厚数十厘米至一米），可通行人马。斯堪的纳维亚与德国间窄海峡冬季成冰桥。全年有效通航期约5–7个月。鱼类类似里海或五大湖，以鲑鳟、白鱼为主。
 · 安纳托利亚半岛：主体为高台隆起，海拔约1000–1500米，占半岛面积七成以上。北部庞廷山脉北坡临扩大后的黑海，受大湖效应暴雪，发育温带雨林与大型冰川，冰川末端伸入海面，冰崩与浮冰影响近岸航行。中部高原仍为半干旱干草原与半荒漠，冬季干冷；东部卡帕多西亚保留凝灰岩“精灵烟囱”与地下城群，地貌不变。西南角做L形平原化改造：沿爱琴海东岸向南延伸约2个纬度（约220公里），再向东折转约2个经度（约170–185公里），形成一条直角拐角的平坦低地，宽窄均匀。低地内侧紧接高台边缘，形成连续断崖，海拔落差约1000米，崖壁近乎垂直；崖面受海风抬升，降水丰沛，多瀑布与常绿林；低地内部河流出山后流速减缓，泥沙沉积形成冲积平原，河网密布，间有沼泽与潟湖。高台内部河流多向西或南注入低地，断崖底部形成冲积扇群；低地河流因坡度极缓，河道频繁改道。第勒尼安海夏季午后规律海风可沿低地竖臂伸入，增强低地降水；高台腹地仍处雨影区，保持干燥。中部高原与卡帕多西亚地区产银矿与凝灰岩，伊斯基亚岛浅层铁矿经海路可输入半岛西岸。
 · 关键参数汇总：
-  · 西西里面积两倍于真实，距北非50公里；新撒丁–科西嘉岛1.5–2.5万平方公里；墨西拿海峡宽8–10公里；莱茵河上游平原宽20–30公里；阿尔卑斯三山口意侧通行更易；第勒尼安海半封闭；亚得里亚海北端封闭；黑海新西岸至塞尔维亚东部–斯洛伐克南部；波罗的海近淡水、冬季大面积封冻；英吉利海峡大幅缩窄；伊比利亚银矿在东海岸崖面；坎帕尼亚平原面积翻倍，火山灰土虹吸效应；第勒尼安海夏季午后规律海风；伊斯基亚岛有铁矿；比利牛斯东段开口为缓丘通道、中段有贯穿深谷；东欧台地南缘为全欧最大木材蓄积量森林带；黑海面积扩大，潘诺尼亚冬季大湖效应暴雪；喀尔巴阡山脉完全删除。
+  · 西西里面积两倍于真实，距北非50公里；新撒丁–科西嘉岛1.5–2.5万平方公里；墨西拿海峡宽8–10公里；莱茵河上游平原宽20–30公里；阿尔卑斯三山口意侧通行更易；第勒尼安海半封闭；亚得里亚海北端封闭；黑海新西岸至塞尔维亚东部–斯洛伐克南部；波罗的海近淡水、冬季大面积封冻；英吉利海峡大幅缩窄；伊比利亚银矿在东海岸崖面；坎帕尼亚平原面积翻倍，火山灰土虹吸效应；第勒尼安海夏季午后规律海风；伊斯基亚岛有铁矿；比利牛斯东段开口为缓丘通道、中段有贯穿深谷；东欧台地南缘为全欧最大木材蓄积量森林带；黑海面积扩大，潘诺尼亚冬季大湖效应暴雪；喀尔巴阡山脉完全删除。</p>
+            </section>
 
-</p>
+            <section class="panel account">
+                <div class="account__grid">
 
-<button onclick="logout()">退出登录</button>
+                    <div class="account__card">
+                        <h2>用户登录</h2>
 
-</body>
+                        <form id="loginForm">
+                            <div class="field">
+                                <label>用户名：</label>
+                                <input type="text" id="username" required>
+                            </div>
 
+                            <div class="field">
+                                <label>密码：</label>
+                                <input type="password" id="password" required>
+                            </div>
 
+                            <div class="form-actions">
+                                <button type="submit">登录</button>
+                            </div>
+                        </form>
+
+                        <p id="loginMessage"></p>
+                        <p id="userInfo"></p>
+                    </div>
+
+                    <div class="account__card">
+                        <h2>用户注册</h2>
+
+                        <form id="registerForm">
+                            <div class="field">
+                                <label>用户名：</label>
+                                <input type="text" id="registerUsername" required>
+                            </div>
+
+                            <div class="field">
+                                <label>密码：</label>
+                                <input type="password" id="registerPassword" required>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="submit">注册</button>
+                            </div>
+                        </form>
+
+                        <p id="registerMessage"></p>
+                    </div>
+
+                </div>
+
+                <div class="account__footer">
+                    <button onclick="logout()">退出登录</button>
+                </div>
+            </section>
+
+            <section class="panel story-desk">
+                <div class="section-head">
+                    <h2>故事投稿</h2>
+                </div>
+
+                <form id="storyForm" class="story-form">
+                    <div class="field field--full">
+                        <label>故事标题：</label>
+                        <input type="text" id="storyTitle" required>
+                    </div>
+
+                    <div class="field field--full">
+                        <label>故事正文：</label>
+                        <textarea id="storyContent" required></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label>关联地点：</label>
+                        <select id="storyLocations" multiple>
+                            <option value="1">卡帕多西亚</option>
+                            <option value="2">银谷悬瀑</option>
+                            <option value="3">霍伊斯山地</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label>关联历史时期：</label>
+                        <select id="storyPeriods" multiple>
+                            <option value="1">第一时期</option>
+                            <option value="2">第二时期</option>
+                            <option value="3">第三时期</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions field--full">
+                        <button type="submit">提交故事</button>
+                    </div>
+                </form>
+
+                <p id="storyMessage"></p>
+            </section>
+
+            <section class="panel my-stories">
+                <div class="section-head">
+                    <h2>我的故事</h2>
+                    <button id="loadMyStories">查看我的故事</button>
+                </div>
+
+                <div id="myStories"></div>
+            </section>
+
+        </main>
+
+    </div>
 
 <script>
     
@@ -814,6 +2089,6 @@ loadPublicStories();
 
 </script>
 
-
+</body>
 
 </html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <title>洛蒂亚世界架空历史地图</title>
+</head>
+
+
+<h2>选择历史时期</h2>
+
+<select id="eraSelect">
+    <option value="第一时期">第一时期</option>
+    <option value="第二时期">第二时期</option>
+    <option value="第三时期">第三时期</option>
+</select>
+
+<p>当前历史时期：<span id="eraName">第一时期</span></p>
+
+<p id="eraDescription">诸国割据，百家争鸣。</p>
+
+<style>
+    body {
+        background-color: #f2efe6;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 30px;
+    }
+
+    h1 {
+        color: #463b2d;
+    }
+
+    h2 {
+        color: #6b5138;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+</style>
+
+
+<body>
+
+    <h1>洛蒂亚世界架空历史地图</h1>
+
+    <p>Welcome to my world.</p>
+    <p id="backendMessage">正在连接洛蒂亚后端……</p>
+    <button id="connectBackend">连接洛蒂亚后端</button>
+
+    <h2>用户登录</h2>
+
+<form id="loginForm">
+    <div>
+        <label>用户名：</label>
+        <input type="text" id="username" required>
+    </div>
+
+    <div>
+        <label>密码：</label>
+        <input type="password" id="password" required>
+    </div>
+
+    <button type="submit">登录</button>
+</form>
+
+<p id="loginMessage"></p>
+<p id="userInfo"></p>
+
+<h2>故事投稿</h2>
+
+<form id="storyForm">
+    <div>
+        <label>故事标题：</label>
+        <input type="text" id="storyTitle" required>
+    </div>
+
+    <div>
+        <label>故事正文：</label>
+        <textarea id="storyContent" required></textarea>
+    </div>
+
+    <div>
+        <label>关联地点：</label>
+        <select id="storyLocations" multiple>
+            <option value="1">卡帕多西亚</option>
+            <option value="2">银谷悬瀑</option>
+            <option value="3">霍伊斯山地</option>
+        </select>
+    </div>
+
+    <div>
+        <label>关联历史时期：</label>
+        <select id="storyPeriods" multiple>
+            <option value="1">第一时期</option>
+            <option value="2">第二时期</option>
+            <option value="3">第三时期</option>
+        </select>
+    </div>
+
+    <button type="submit">提交故事</button>
+</form>
+
+<p id="storyMessage"></p>
+
+<h2>我的故事</h2>
+
+<button id="loadMyStories">查看我的故事</button>
+
+<div id="myStories"></div>
+
+<h2>用户注册</h2>
+<form id="registerForm">
+    <div>
+        <label>用户名：</label>
+        <input type="text" id="registerUsername" required>
+    </div>
+    <div>
+        <label>密码：</label>
+        <input type="password" id="registerPassword" required>
+    </div>
+    <button type="submit">注册</button>
+</form>
+<p id="registerMessage"></p>
+
+   <img id="historyMap" src="images/map1.png" alt="架空历史地图" width="1375">
+
+    <h2>世界概览</h2>
+ <h2>世界概览</h2>
+<p>· 意大利半岛：轮廓不变，亚平宁山脉纵贯。波河平原多沼泽，河流分叉形成天然水道，沙质河堤构成可定居的“河中岛”。坎帕尼亚平原面积翻倍，火山灰土垂直渗透性佳，暴雨被土壤吸收导入深层地下水，旱季作物可汲取深层水。那不勒斯湾为深水良港群，伊斯基亚、普罗奇达、卡普里岛成链。伊斯基亚岛有浅层易采铁矿。
+· 西西里岛：面积加倍，距北非约50公里。撒丁与科西嘉抹除，原址附近生新岛，面积1.5–2.5万平方公里。墨西拿海峡宽8–10公里，暗礁密布、潮汐复杂，永久性巨型漩涡群与剪切流使航行极危险；海峡上空因第勒尼安海蒸发水汽与盐沫交汇，几乎每日下午定时爆发剧烈局地雷暴，称“暗礁风暴墙”。
+· 阿尔卑斯山：略高，北陡南缓。博尔扎诺、大圣伯纳德、滨海阿尔卑斯三山口，意侧通行易。北壁冰川作用更强，冰川末端发育巨型冰洞与冰拱门，内闪蓝光，俯视北侧深谷。
+· 第勒尼安海：半封闭，南有宽出口。夏季白天，阿尔卑斯与亚平宁热力环流形成规律午后海风（正午起、傍晚散），为近岸航行及海军训练提供可靠动力。夏秋之交冷空气侵入时，全海面雷暴单体密布如“沸腾的粥”，闪电亮如白昼。
+· 巴尔干南部与安纳托利亚：希腊与阿尔巴尼亚大部变海，南部留狭窄海峡系统（似博、达海峡），连接残存爱琴海与黑海，春季初夏多浓雾。安纳托利亚西移，西端抵新海峡东岸，扼黑海—地中海唯一水道；东端连亚洲，保留高原与沿海平原。爱奥尼亚海宽阔。安纳托利亚北岸临扩大后的黑海，庞廷山脉北坡受大湖效应暴雪，发育温带雨林；内陆高原半干旱，干草原与半荒漠。
+· 黑海西岸及多瑙河下游：保加利亚、罗马尼亚中线以东变海，黑海大幅内拓，新西岸止于塞尔维亚东部、匈牙利西部、斯洛伐克南部。黑海调节气候：冬季东欧台地干冷气团经黑海加热加湿，在潘诺尼亚及西岸制造极端大湖效应暴雪（雪季11–3月，积雪数米）；冬季海湾与台地冷空气交汇形成绵延数百公里平流雾带；夏季凉爽湿润，秋季漫长温和（“永恒秋日”）。喀尔巴阡山脉完全删除，变为丘陵平原。多瑙河下游河道缩短，入海口在塞尔维亚至匈牙利西部，贝尔格莱德成滨海城市。
+· 中欧平原与过渡带：德国南部留河谷盆地群，莱茵河上游平原宽20–30公里，中游留峡谷。捷克波希米亚盆地封闭肥沃，四周山脉环绕，内部起伏平原。奥地利多瑙河上游河谷拓宽。斯洛伐克至塞尔维亚山地平原交错。
+· 东欧台地：波兰、白俄罗斯、乌克兰抬为台地高原（海拔500–800米），深谷切割。极端大陆性气候：冬季漫长严寒（≤-30°C），风大、雪少、天晴；夏季干热；年降水250–400毫米，温带草原与半荒漠，仅支持游牧。南缘陡坡以千米级落差俯瞰黑海新海湾。黑海暖湿气流被抬升，南坡降水丰沛，发育全欧最大温带森林。坡顶有几乎静止的巨型云墙，以上为干旱草原。南坡短促河流切出峡谷、瀑布与激流，谷底暖岛支撑小规模定居农业。
+· 斯堪的纳维亚与丹麦：丹麦全删。斯堪的纳维亚半岛扭为东西走向，挪威南部向南延伸，与德国北部间留窄海峡。山脉成气候分界线：南坡受北大西洋暖流湿润西风，雨林、大型冰川，降水最多、风暴最频，但古典时代承载力低；北坡雨影区极地荒漠，干冷无树。山口隘道两侧景观骤变，称“阴阳界”。
+· 法国北部与不列颠：布列塔尼及法国北部沿海删除。大不列颠岛南移，英吉利海峡大幅缩窄，不列颠成大陆近岸延伸。
+· 伊比利亚半岛：伊比利亚东移，巴利阿里群岛被吞没。东海岸形成富含银矿的绵长海崖，迎湿润地中海西风，降水可观；数百条瀑布倾泻，崖壁水幕笼罩。银矿横向开凿，靠绞车与滑索穿过水雾运至港口，称“悬空银矿”“水幕走廊”。崖底含矿水体呈蓝绿色，或滋养发光微生物。开采受天气制约，为断续暴利。中央高原因雨影效应形成广阔半荒漠，东西海岸几乎被隔断。比利牛斯山脉东段开口为宽缓丘通道，地中海暖湿气流可入高卢南部，增强其地中海气候；冬季冷空气亦可南下。中段保留高峰冰川，但有冰川深谷贯穿，谷底平坦、两侧绝壁，为“风洞”与湿润绿洲，是战略咽喉。
+· 波罗的海：近淡水，与大西洋交换极弱，盐度极低，冰点近0°C。冬季大面积封冻（北部冰层厚数十厘米至一米），可通行人马。斯堪的纳维亚与德国间窄海峡冬季成冰桥。全年有效通航期约5–7个月。鱼类类似里海或五大湖，以鲑鳟、白鱼为主。
+· 安纳托利亚半岛：主体为高台隆起，海拔约1000–1500米，占半岛面积七成以上。北部庞廷山脉北坡临扩大后的黑海，受大湖效应暴雪，发育温带雨林与大型冰川，冰川末端伸入海面，冰崩与浮冰影响近岸航行。中部高原仍为半干旱干草原与半荒漠，冬季干冷；东部卡帕多西亚保留凝灰岩“精灵烟囱”与地下城群，地貌不变。西南角做L形平原化改造：沿爱琴海东岸向南延伸约2个纬度（约220公里），再向东折转约2个经度（约170–185公里），形成一条直角拐角的平坦低地，宽窄均匀。低地内侧紧接高台边缘，形成连续断崖，海拔落差约1000米，崖壁近乎垂直；崖面受海风抬升，降水丰沛，多瀑布与常绿林；低地内部河流出山后流速减缓，泥沙沉积形成冲积平原，河网密布，间有沼泽与潟湖。高台内部河流多向西或南注入低地，断崖底部形成冲积扇群；低地河流因坡度极缓，河道频繁改道。第勒尼安海夏季午后规律海风可沿低地竖臂伸入，增强低地降水；高台腹地仍处雨影区，保持干燥。中部高原与卡帕多西亚地区产银矿与凝灰岩，伊斯基亚岛浅层铁矿经海路可输入半岛西岸。
+· 关键参数汇总：
+  · 西西里面积两倍于真实，距北非50公里；新撒丁–科西嘉岛1.5–2.5万平方公里；墨西拿海峡宽8–10公里；莱茵河上游平原宽20–30公里；阿尔卑斯三山口意侧通行更易；第勒尼安海半封闭；亚得里亚海北端封闭；黑海新西岸至塞尔维亚东部–斯洛伐克南部；波罗的海近淡水、冬季大面积封冻；英吉利海峡大幅缩窄；伊比利亚银矿在东海岸崖面；坎帕尼亚平原面积翻倍，火山灰土虹吸效应；第勒尼安海夏季午后规律海风；伊斯基亚岛有铁矿；比利牛斯东段开口为缓丘通道、中段有贯穿深谷；东欧台地南缘为全欧最大木材蓄积量森林带；黑海面积扩大，潘诺尼亚冬季大湖效应暴雪；喀尔巴阡山脉完全删除。
+
+</p>
+
+<button onclick="logout()">退出登录</button>
+
+</body>
+
+
+
+<script>
+    
+const eraSelect = document.getElementById("eraSelect");
+const eraName = document.getElementById("eraName");
+const historyMap = document.getElementById("historyMap");
+let accessToken = localStorage.getItem("access_token");
+function logout() {
+    localStorage.removeItem("access_token");
+    accessToken = null;
+
+    document.getElementById("userInfo").textContent = "";
+    document.getElementById("loginMessage").textContent = "";
+    document.getElementById("loginForm").reset();
+
+    alert("已退出登录");
+}
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    try {
+        const response = await fetch("https://plasma-grew-int-cabinets.trycloudflare.com/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            document.getElementById("loginMessage").textContent = data.detail;
+            return;
+        }
+
+        accessToken = data.access_token;
+        localStorage.setItem("access_token", accessToken);
+
+        document.getElementById("loginMessage").textContent = "登录成功！";
+        await getUserInfo();
+
+    } catch (error) {
+        document.getElementById("loginMessage").textContent = "连接后端失败";
+        console.error(error);
+    }
+});
+
+// 前端注册功能
+const registerForm = document.getElementById("registerForm");
+
+registerForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("registerUsername").value;
+    const password = document.getElementById("registerPassword").value;
+
+    try {
+        const response = await fetch("https://plasma-grew-int-cabinets.trycloudflare.com/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            document.getElementById("registerMessage").textContent = data.detail;
+            return;
+        }
+
+        document.getElementById("registerMessage").textContent = "注册成功！";
+
+    } catch (error) {
+        document.getElementById("registerMessage").textContent = "连接后端失败";
+        console.error(error);
+    }
+});
+
+// 前端故事投稿功能
+const storyForm = document.getElementById("storyForm");
+
+let editingStoryId = null;
+storyForm.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    if (!accessToken) {
+        document.getElementById("storyMessage").textContent =
+            "请先登录，再提交故事。";
+        return;
+    }
+
+    const title = document.getElementById("storyTitle").value;
+    const content = document.getElementById("storyContent").value;
+
+    const locationIds = Array.from(
+        document.getElementById("storyLocations").selectedOptions
+    ).map(option => Number(option.value));
+
+    const periodIds = Array.from(
+        document.getElementById("storyPeriods").selectedOptions
+    ).map(option => Number(option.value));
+
+    // 根据是否正在编辑，决定提交新故事还是新版本
+    
+const url = editingStoryId === null
+    ? "https://plasma-grew-int-cabinets.trycloudflare.com/stories"
+    : "https://plasma-grew-int-cabinets.trycloudflare.com/stories/" + editingStoryId + "/versions";
+
+try {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${accessToken}`
+        },
+        body: JSON.stringify({
+            title: title,
+            content: content,
+            location_ids: locationIds,
+            period_ids: periodIds
+        })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        document.getElementById("storyMessage").textContent =
+            data.detail || "提交失败";
+        return;
+    }
+
+    alert(
+        (editingStoryId === null ? "投稿成功！" : "新版本提交成功！") +
+        "\n故事编号（story_id）：" + data.story_id +
+        "\n版本编号（version_id）：" + data.version_id +
+        "\n已提交审核。"
+    );
+
+    editingStoryId = null;
+    storyForm.reset();
+
+} catch (error) {
+    document.getElementById("storyMessage").textContent =
+        "连接后端失败";
+
+    console.error(error);
+}
+});
+
+// 查看我的故事
+const loadMyStoriesButton = document.getElementById("loadMyStories");
+
+loadMyStoriesButton.addEventListener("click", async function() {
+    const myStoriesContainer = document.getElementById("myStories");
+
+    if (!accessToken) {
+        myStoriesContainer.textContent = "请先登录。";
+        return;
+    }
+
+    try {
+        const response = await fetch(
+            "https://plasma-grew-int-cabinets.trycloudflare.com/my-stories",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            myStoriesContainer.textContent =
+                data.detail || "获取故事失败";
+            return;
+        }
+
+        myStoriesContainer.innerHTML = "";
+
+        if (data.length === 0) {
+            myStoriesContainer.textContent = "你还没有提交过故事。";
+            return;
+        }
+
+                                     data.forEach(function(story) {
+    const storyItem = document.createElement("div");
+
+    const title = document.createElement("h3");
+    title.textContent = story.title;
+
+    const version = document.createElement("p");
+    version.textContent = "版本：V" + story.version_number;
+
+    const status = document.createElement("p");
+
+    const statusText = {
+        pending: "审核中",
+        approved: "已通过",
+        rejected: "未通过"
+    };
+
+    status.textContent =
+        "审核状态：" + (statusText[story.status] || story.status);
+
+    const content = document.createElement("p");
+    content.textContent = story.content;
+
+    // 查看版本历史按钮
+    
+const historyButton = document.createElement("button");
+historyButton.textContent = "查看版本历史";
+
+historyButton.addEventListener("click", async function() {
+    try {
+        const response = await fetch(
+            "https://plasma-grew-int-cabinets.trycloudflare.com/my-stories/" +
+            story.story_id + "/history",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            }
+        );
+
+        const historyData = await response.json();
+
+        if (!response.ok) {
+            alert(historyData.detail || "获取版本历史失败");
+            return;
+        }
+
+        const historyText = historyData.versions.map(function(item) {
+            return (
+                "版本：V" + item.version_number +
+                "\n标题：" + item.title +
+                "\n审核状态：" +
+                (statusText[item.status] || item.status) +
+                "\n正文：" + item.content +
+                "\n审核意见：" +
+                (item.reviews && item.reviews.length > 0
+                    ? item.reviews.map(review =>
+                        review.result + "：" +
+                        (review.comment || "无审核意见")
+                    ).join("\n")
+                    : "暂无审核记录")
+            );
+        }).join("\n\n--------------------\n\n");
+
+        alert(historyText);
+
+    } catch (error) {
+        alert("连接后端失败");
+        console.error(error);
+    }
+});
+
+// 提交新版本按钮
+const updateButton = document.createElement("button");
+updateButton.textContent = "提交新版本";
+
+updateButton.addEventListener("click", function() {
+        editingStoryId = story.story_id;
+    editingStoryId = story.story_id;
+
+    document.getElementById("storyTitle").value = story.title;
+    document.getElementById("storyContent").value = story.content;
+
+    document.getElementById("storyMessage").textContent =
+        "正在修改故事 #" + story.story_id + "，请编辑后提交新版本。";
+
+    document.getElementById("storyForm").scrollIntoView({
+        behavior: "smooth"
+    });
+});
+
+storyItem.appendChild(title);
+storyItem.appendChild(version);
+storyItem.appendChild(status);
+storyItem.appendChild(content);
+storyItem.appendChild(historyButton);
+storyItem.appendChild(updateButton);
+
+myStoriesContainer.appendChild(storyItem);
+
+});
+    } catch (error) {
+        myStoriesContainer.textContent = "连接后端失败";
+        console.error(error);
+    }
+});
+
+async function getUserInfo() {
+    const response = await fetch("https://plasma-grew-int-cabinets.trycloudflare.com/me", {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    });
+
+    if (!response.ok) {
+        document.getElementById("userInfo").textContent = "获取用户信息失败";
+        return;
+    }
+
+    const user = await response.json();
+
+    document.getElementById("userInfo").textContent =
+        "当前登录用户：" + user.username;
+}
+
+if (accessToken) {
+    getUserInfo();
+}
+
+const eraDescription = document.getElementById("eraDescription");
+
+const descriptions = {
+    "第一时期": "诸国割据，百家争鸣。",
+    "第二时期": "帝国崛起，领土不断扩张。",
+    "第三时期": "王朝统一，迎来盛世。"
+};
+
+const maps = {
+    "第一时期": "images/map1.png",
+    "第二时期": "images/map2.png",
+    "第三时期": "images/map3.png"
+};
+
+eraSelect.addEventListener("change", function() {
+    eraName.textContent = eraSelect.value;
+    historyMap.src = maps[eraSelect.value];
+
+    eraDescription.textContent = descriptions[eraSelect.value];
+});
+
+const connectBackend = document.getElementById("connectBackend");
+
+connectBackend.addEventListener("click", function() {
+    fetch("https://plasma-grew-int-cabinets.trycloudflare.com/")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("backendMessage").textContent = data.message;
+        })
+        .catch(error => {
+            document.getElementById("backendMessage").textContent = "连接后端失败";
+            console.error(error);
+        });
+});
+
+
+// 管理员审核区域
+const adminPanel = document.createElement("section");
+adminPanel.id = "adminPanel";
+adminPanel.style.cssText = `
+    margin: 40px auto;
+    padding: 20px;
+    max-width: 900px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+`;
+
+const adminTitle = document.createElement("h2");
+adminTitle.textContent = "管理员审核中心";
+
+const loadPendingButton = document.createElement("button");
+loadPendingButton.textContent = "加载待审核故事";
+
+const pendingContainer = document.createElement("div");
+
+adminPanel.appendChild(adminTitle);
+adminPanel.appendChild(loadPendingButton);
+adminPanel.appendChild(pendingContainer);
+
+document.body.appendChild(adminPanel);
+
+// 加载待审核故事
+loadPendingButton.addEventListener("click", async function() {
+    if (!accessToken) {
+        pendingContainer.textContent = "请先登录管理员账号。";
+        return;
+    }
+
+    pendingContainer.textContent = "正在加载...";
+
+    try {
+        const response = await fetch(
+            "https://plasma-grew-int-cabinets.trycloudflare.com/admin/pending-stories",
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            pendingContainer.textContent =
+                data.detail || "获取待审核故事失败";
+            return;
+        }
+
+        pendingContainer.innerHTML = "";
+
+        if (data.length === 0) {
+            pendingContainer.textContent = "目前没有待审核故事。";
+            return;
+        }
+
+        data.forEach(function(story) {
+            const item = document.createElement("div");
+            item.style.cssText = `
+                margin-top: 20px;
+                padding: 15px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            `;
+
+            const title = document.createElement("h3");
+            title.textContent = story.title;
+
+            const info = document.createElement("p");
+            info.textContent =
+                "作者：" + story.author +
+                " | 故事编号：" + story.story_id +
+                " | 版本编号：" + story.version_id +
+                " | 版本：V" + story.version_number;
+
+            const content = document.createElement("p");
+            content.textContent = story.content;
+
+            const time = document.createElement("p");
+            time.textContent = "投稿时间：" + story.created_at;
+
+            
+item.appendChild(title);
+item.appendChild(info);
+item.appendChild(content);
+item.appendChild(time);
+
+// 审核通过按钮
+const approveButton = document.createElement("button");
+approveButton.textContent = "审核通过";
+
+approveButton.addEventListener("click", async function() {
+    const confirmed = confirm(
+        "确定审核通过这篇故事的当前版本吗？"
+    );
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const approveResponse = await fetch(
+            "https://plasma-grew-int-cabinets.trycloudflare.com/admin/reviews/" +
+            story.version_id + "/approve",
+            {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            }
+        );
+
+        const result = await approveResponse.json();
+
+        if (!approveResponse.ok) {
+            alert(result.detail || "审核失败");
+            return;
+        }
+
+        alert("审核操作成功！\n" + result.message);
+
+        // 重新加载待审核列表
+        loadPendingButton.click();
+
+    } catch (error) {
+        alert("连接后端失败");
+        console.error(error);
+    }
+});
+
+
+item.appendChild(approveButton);
+
+// 审核拒绝理由
+const rejectComment = document.createElement("textarea");
+rejectComment.placeholder = "请输入拒绝理由";
+rejectComment.rows = 3;
+rejectComment.style.cssText = `
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    box-sizing: border-box;
+`;
+
+const rejectButton = document.createElement("button");
+rejectButton.textContent = "审核拒绝";
+rejectButton.style.marginTop = "8px";
+
+rejectButton.addEventListener("click", async function() {
+    const comment = rejectComment.value.trim();
+
+    if (!comment) {
+        alert("请先填写拒绝理由。");
+        return;
+    }
+
+    if (!confirm("确定拒绝这个故事版本吗？")) {
+        return;
+    }
+
+    try {
+        const rejectResponse = await fetch(
+            "https://plasma-grew-int-cabinets.trycloudflare.com/admin/reviews/" +
+            story.version_id + "/reject",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    comment: comment
+                })
+            }
+        );
+
+        const result = await rejectResponse.json();
+
+        if (!rejectResponse.ok) {
+            alert(result.detail || "审核拒绝失败");
+            return;
+        }
+
+        alert("审核操作成功！\n" + result.message);
+        loadPendingButton.click();
+
+    } catch (error) {
+        alert("连接后端失败");
+        console.error(error);
+    }
+});
+
+item.appendChild(rejectComment);
+item.appendChild(rejectButton);
+
+pendingContainer.appendChild(item);
+
+
+            pendingContainer.appendChild(item);
+        });
+
+    } catch (error) {
+        pendingContainer.textContent = "连接后端失败";
+        console.error(error);
+    }
+});
+
+
+// 公开故事展示区域
+const publicStoriesSection = document.createElement("section");
+publicStoriesSection.id = "publicStories";
+publicStoriesSection.style.cssText = `
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+`;
+
+const publicStoriesTitle = document.createElement("h2");
+publicStoriesTitle.textContent = "洛蒂亚公开故事";
+
+const publicStoriesContainer = document.createElement("div");
+publicStoriesContainer.textContent = "正在加载公开故事...";
+
+publicStoriesSection.appendChild(publicStoriesTitle);
+publicStoriesSection.appendChild(publicStoriesContainer);
+
+document.body.appendChild(publicStoriesSection);
+
+// 获取公开故事
+async function loadPublicStories() {
+    try {
+        const response = await fetch(
+            "https://plasma-grew-int-cabinets.trycloudflare.com/stories"
+        );
+
+        const stories = await response.json();
+
+        if (!response.ok) {
+            publicStoriesContainer.textContent = "公开故事加载失败";
+            return;
+        }
+
+        publicStoriesContainer.innerHTML = "";
+
+        if (stories.length === 0) {
+            publicStoriesContainer.textContent = "目前还没有公开故事。";
+            return;
+        }
+
+        stories.forEach(function(story) {
+            const card = document.createElement("article");
+            card.style.cssText = `
+                margin-top: 20px;
+                padding: 18px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+            `;
+
+            const title = document.createElement("h3");
+            title.textContent = story.title;
+
+            const content = document.createElement("p");
+            content.textContent = story.content;
+
+            const detailButton = document.createElement("button");
+            detailButton.textContent = "查看完整故事";
+
+            detailButton.addEventListener("click", function() {
+                alert(
+                    story.title + "\n\n" + story.content
+                );
+            });
+
+            card.appendChild(title);
+            card.appendChild(content);
+            card.appendChild(detailButton);
+
+            publicStoriesContainer.appendChild(card);
+        });
+
+    } catch (error) {
+        publicStoriesContainer.textContent = "无法连接故事服务器";
+        console.error(error);
+    }
+}
+
+loadPublicStories();
+
+
+</script>
+
+
+
+</html>
