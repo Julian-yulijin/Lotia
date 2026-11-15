@@ -8,36 +8,30 @@
 
     <style>
         /* ============================================================
-           LOTIA — 数字历史档案馆 · 第二轮精修
-           仅样式与版式；脚本、数据逻辑与页面内容未作任何改动
+           LOTIA — 虚构世界历史档案馆与古典地图集
+           第三轮视觉重构：仅样式，脚本、数据与内容一字未改
            ============================================================ */
 
         :root {
-            /* 墨色：深海军蓝 → 石墨灰 */
-            --ink-950: #0a1118;
-            --ink-900: #101a24;
-            --ink-800: #18242f;
-            --ink-700: #23313d;
+            /* 纸 */
+            --paper: #f1ebdf;
+            --paper-hi: #f8f4e9;
+            --paper-lo: #e8e1d1;
 
-            /* 纸色：暖白 / 浅灰 / 雾灰 */
-            --paper: #f4f1e9;
-            --paper-raised: #fbf9f4;
-            --paper-sunk: #ece8de;
+            /* 墨与褐 */
+            --ink: #2a2418;
+            --ink-soft: #4e4635;
+            --ink-mute: #7d7362;
 
-            /* 文字 */
-            --graphite: #1c2329;
-            --graphite-60: #4d565f;
-            --graphite-40: #78818a;
+            /* 古典辅助色（低饱和） */
+            --blue: #3e5567;
+            --olive: #5f6244;
+            --rust: #7b4a39;
+            --copper: #8c7248;
 
-            /* 低饱和黄铜：仅用于细线与极小面积点缀 */
-            --brass: #94805a;
-            --brass-soft: rgba(148, 128, 90, 0.4);
-
-            /* 分隔线 */
-            --rule: #d9d3c6;
-            --rule-strong: #b8b1a1;
-            --rule-ink: rgba(238, 233, 223, 0.16);
-            --rule-ink-strong: rgba(238, 233, 223, 0.32);
+            /* 界线 */
+            --rule: #d3c9b4;
+            --rule-strong: #ad9f85;
 
             --serif: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, "Times New Roman", serif;
             --sans: "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -62,16 +56,28 @@
             font-family: var(--sans);
             font-size: 16px;
             line-height: 1.8;
-            color: var(--graphite);
+            color: var(--ink);
             background-color: var(--paper);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
         }
 
+        /* 纸纤维：极低透明度噪点，仅作质感 */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.055;
+            mix-blend-mode: multiply;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23p)'/%3E%3C/svg%3E");
+        }
+
         ::selection {
-            background: rgba(148, 128, 90, 0.26);
-            color: #17130c;
+            background: rgba(140, 114, 72, 0.28);
+            color: #1b1610;
         }
 
         .page {
@@ -79,91 +85,106 @@
             z-index: 1;
         }
 
-        /* ============================== 报头 ============================== */
+        /* ============================== 扉页 ============================== */
 
         .hero {
-            background-color: var(--ink-950);
-            color: #ece7dc;
+            position: relative;
+            text-align: center;
+            background: var(--paper-hi);
+            border-bottom: 1px solid var(--rule-strong);
+        }
+
+        /* 顶部压印条：档案馆印记 */
+        .hero::before {
+            content: "LOTIA · ARCHIVUM MUNDI";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 38px;
+            background: var(--ink);
+            color: rgba(241, 235, 223, 0.72);
+            font-family: var(--sans);
+            font-size: 0.54rem;
+            font-weight: 500;
+            letter-spacing: 0.46em;
+            text-indent: 0.46em;
+            white-space: nowrap;
+            overflow: hidden;
         }
 
         .hero__inner {
+            position: relative;
             display: flex;
-            flex-wrap: wrap;
-            align-items: flex-end;
-            column-gap: 44px;
+            flex-direction: column;
+            align-items: center;
             max-width: 1180px;
             margin: 0 auto;
-            padding: 62px 32px 58px;
-            text-align: left;
+            padding: 54px 32px 52px;
         }
 
-        /* 出版机构式的刊头字，纯装饰 */
         .hero__inner::before {
-            content: "LOTIA";
-            flex: 0 0 100%;
-            padding-bottom: 26px;
-            margin-bottom: 40px;
-            border-bottom: 1px solid var(--rule-ink);
+            content: "ARCHIVE NO. LOTIA · MS 0001";
+            margin-bottom: 24px;
             font-family: var(--sans);
-            font-size: 0.64rem;
-            font-weight: 600;
-            line-height: 1;
-            letter-spacing: 0.52em;
-            color: rgba(236, 231, 220, 0.46);
+            font-size: 0.58rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            color: var(--copper);
         }
 
         .hero h1 {
-            flex: 0 0 100%;
-            margin: 0 0 24px;
+            margin: 0;
             font-family: var(--serif);
             font-weight: 600;
-            font-size: clamp(2rem, 4.5vw, 3.3rem);
-            line-height: 1.26;
-            letter-spacing: 0.035em;
-            color: #f5f1e7;
+            font-size: clamp(1.95rem, 4.1vw, 3.05rem);
+            line-height: 1.3;
+            letter-spacing: 0.09em;
+            color: var(--ink);
             text-wrap: balance;
         }
 
         .hero h1::after {
-            content: none;
+            content: "";
+            display: block;
+            width: 132px;
+            height: 1px;
+            margin: 26px auto 0;
+            background: var(--rule-strong);
         }
 
         .hero__sub {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 16px;
-            margin: 0;
+            margin: 20px 0 0;
             font-family: Georgia, "Times New Roman", var(--serif);
             font-style: italic;
-            font-size: 0.98rem;
-            letter-spacing: 0.05em;
-            color: #a8a196;
+            font-size: 0.96rem;
+            letter-spacing: 0.06em;
+            color: var(--ink-mute);
         }
 
-        .hero__sub::before {
+        .hero__sub::before,
+        .hero__sub::after {
             content: "";
             flex: none;
-            width: 30px;
+            width: 26px;
             height: 1px;
-            background: var(--brass-soft);
-        }
-
-        .hero__sub::after {
-            content: none;
+            background: var(--rule-strong);
         }
 
         .hero__status {
             display: flex;
             align-items: center;
+            justify-content: center;
             flex-wrap: wrap;
-            gap: 24px;
-            margin-left: auto;
-            padding: 0;
-            border: 0;
+            gap: 22px;
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid var(--rule);
             background: none;
             box-shadow: none;
-            -webkit-backdrop-filter: none;
-            backdrop-filter: none;
         }
 
         #backendMessage {
@@ -171,9 +192,9 @@
             align-items: center;
             gap: 9px;
             margin: 0;
-            font-size: 0.76rem;
-            letter-spacing: 0.1em;
-            color: #939ca5;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            color: var(--ink-mute);
             text-align: left;
         }
 
@@ -182,27 +203,27 @@
             flex: none;
             width: 5px;
             height: 5px;
-            background: var(--brass);
-            animation: none;
+            border-radius: 50%;
+            background: var(--olive);
         }
 
         #connectBackend {
-            padding: 0.55rem 1rem;
-            border: 1px solid var(--rule-ink-strong);
+            padding: 0.5rem 1.05rem;
+            border: 1px solid var(--ink-soft);
             border-radius: 0;
             background: transparent;
-            color: #ded8cc;
-            font-size: 0.68rem;
+            color: var(--ink);
+            font-size: 0.66rem;
             letter-spacing: 0.18em;
         }
 
         #connectBackend:hover {
-            background: #ece7dc;
-            border-color: #ece7dc;
-            color: var(--ink-950);
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--paper-hi);
         }
 
-        /* ============================== 版心与节奏 ============================== */
+        /* ============================== 版心 ============================== */
 
         .archive {
             position: relative;
@@ -211,27 +232,28 @@
             flex-direction: column;
             max-width: 1180px;
             margin: 0 auto;
-            padding: 0 32px 128px;
+            padding: 0 32px 120px;
         }
 
         .archive > * + * {
-            margin-top: 96px;
+            margin-top: 84px;
         }
 
-        .era-panel + .map-plate {
-            margin-top: 0;
+        .archive > .panel:first-child {
+            padding-top: 46px;
+            border-top: 0;
         }
 
         /* ============================== 章节 ============================== */
 
         .panel {
             position: relative;
-            padding: 44px 0 0;
+            padding: 42px 0 0;
             border: 0;
-            border-top: 1px solid var(--rule);
+            border-top: 1px solid var(--rule-strong);
             border-radius: 0;
             background: none;
-            color: var(--graphite);
+            color: var(--ink);
             text-align: left;
             box-shadow: none;
         }
@@ -245,41 +267,83 @@
             margin: 0;
             font-family: var(--serif);
             font-weight: 600;
-            font-size: clamp(1.4rem, 2vw, 1.65rem);
-            line-height: 1.42;
-            letter-spacing: 0.045em;
-            color: var(--graphite);
+            font-size: clamp(1.38rem, 1.9vw, 1.6rem);
+            line-height: 1.45;
+            letter-spacing: 0.06em;
+            color: var(--ink);
         }
 
-        .panel h2::before {
+        /* 章节编号（纯装饰） */
+        .panel h2::before,
+        #adminPanel > h2::before,
+        #publicStories > h2::before {
+            font-family: var(--sans);
+            font-size: 0.56rem;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            color: var(--ink-mute);
+            display: inline-block;
+            margin-right: 0.9rem;
+            vertical-align: 0.42em;
+        }
+
+        .era-panel h2::before {
+            content: "§ 01";
+        }
+
+        .overview h2::before {
+            content: "§ 02";
+        }
+
+        .account .account__card:first-child h2::before {
+            content: "§ 03";
+        }
+
+        .story-desk h2::before {
+            content: "§ 04";
+        }
+
+        .my-stories h2::before {
+            content: "§ 05";
+        }
+
+        #adminPanel > h2::before {
+            content: "§ 06";
+        }
+
+        #publicStories > h2::before {
+            content: "§ 07";
+        }
+
+        .overview__head h2 + h2::before,
+        .account .account__card + .account__card h2::before {
             content: none;
         }
 
         .section-head {
             display: flex;
-            align-items: flex-end;
+            align-items: baseline;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 24px;
-            padding-bottom: 18px;
-            margin-bottom: 34px;
+            gap: 20px;
+            padding-bottom: 16px;
+            margin-bottom: 32px;
             border-bottom: 1px solid var(--rule);
         }
 
         .section-head h2 {
             margin: 0;
-            font-size: clamp(1.45rem, 2.4vw, 1.8rem);
+            font-size: clamp(1.42rem, 2.2vw, 1.72rem);
         }
 
-        /* ============================== 断代栏 ============================== */
+        /* ============================== 编年检索栏 ============================== */
 
         .era-panel {
             display: grid;
-            grid-template-columns: minmax(0, 288px) minmax(0, 1fr);
-            column-gap: 64px;
-            padding: 46px 0 30px;
-            border-top: 1px solid var(--rule);
-            border-bottom: 1px solid var(--rule);
+            grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+            column-gap: 60px;
+            padding: 0 0 28px;
+            border-bottom: 1px solid var(--rule-strong);
         }
 
         .era-panel__head {
@@ -288,7 +352,7 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 18px;
+            gap: 16px;
             padding: 0;
             margin: 0;
             border: 0;
@@ -296,17 +360,17 @@
 
         .era-panel__head h2 {
             font-family: var(--sans);
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 600;
             line-height: 1.6;
-            letter-spacing: 0.24em;
-            color: var(--graphite-40);
+            letter-spacing: 0.22em;
+            color: var(--ink-mute);
         }
 
         .select-wrap {
             position: relative;
             width: 100%;
-            max-width: 288px;
+            max-width: 300px;
             min-width: 0;
         }
 
@@ -314,13 +378,13 @@
             -webkit-appearance: none;
             appearance: none;
             width: 100%;
-            padding: 0.68rem 2.6rem 0.68rem 0.9rem;
+            padding: 0.66rem 2.6rem 0.66rem 0.9rem;
             font-family: var(--serif);
             font-size: 1.02rem;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             line-height: 1.5;
-            color: var(--graphite);
-            background-color: var(--paper-raised);
+            color: var(--ink);
+            background-color: var(--paper-hi);
             border: 1px solid var(--rule-strong);
             border-radius: 0;
             box-shadow: none;
@@ -329,13 +393,13 @@
         }
 
         .select-wrap select:hover {
-            border-color: var(--graphite-40);
+            border-color: var(--ink-mute);
         }
 
         .select-wrap select:focus {
             outline: none;
-            border-color: var(--graphite);
-            box-shadow: 0 0 0 1px var(--graphite);
+            border-color: var(--ink);
+            box-shadow: 0 0 0 3px rgba(62, 85, 103, 0.14);
         }
 
         .select-wrap::after {
@@ -345,8 +409,8 @@
             right: 1.05rem;
             width: 6px;
             height: 6px;
-            border-right: 1px solid var(--graphite-60);
-            border-bottom: 1px solid var(--graphite-60);
+            border-right: 1px solid var(--ink-soft);
+            border-bottom: 1px solid var(--ink-soft);
             transform: translateY(-70%) rotate(45deg);
             pointer-events: none;
         }
@@ -359,70 +423,139 @@
             flex-wrap: wrap;
             gap: 0.6rem;
             margin: 0;
-            font-size: 0.7rem;
+            font-size: 0.66rem;
             letter-spacing: 0.2em;
-            color: var(--graphite-40);
+            color: var(--ink-mute);
         }
 
         #eraName {
             display: inline-block;
             padding: 0 0 2px;
             border: 0;
-            border-bottom: 1px solid var(--brass-soft);
+            border-bottom: 1px solid var(--copper);
             background: none;
             font-family: var(--serif);
-            font-size: 1rem;
-            letter-spacing: 0.1em;
+            font-size: 0.98rem;
+            letter-spacing: 0.12em;
             line-height: 1.5;
-            color: var(--graphite);
+            color: var(--ink);
         }
 
         #eraDescription {
             grid-column: 2;
             grid-row: 2;
-            margin: 16px 0 0;
+            margin: 14px 0 0;
             padding: 0;
             border: 0;
             font-family: var(--serif);
-            font-size: clamp(1.15rem, 1.9vw, 1.4rem);
-            line-height: 1.75;
-            letter-spacing: 0.055em;
-            color: var(--graphite);
+            font-size: clamp(1.12rem, 1.8vw, 1.36rem);
+            line-height: 1.85;
+            letter-spacing: 0.06em;
+            color: var(--ink);
         }
 
         /* ============================== 地图图版 ============================== */
 
         .map-plate {
             position: relative;
+            margin-top: 0;
             margin-right: -32px;
             margin-left: -32px;
+            padding: 54px 36px 58px;
+            background: var(--paper-lo);
+            border: 1px solid var(--ink-soft);
+            border-radius: 0;
+            box-shadow:
+                inset 0 0 0 4px var(--paper-lo),
+                inset 0 0 0 5px rgba(173, 159, 133, 0.75);
+        }
+
+        .era-panel + .map-plate {
+            margin-top: 34px;
+        }
+
+        /* 图版标题（装饰） */
+        .map-plate::before {
+            content: "PLATE I · TABULA MUNDI";
+            position: absolute;
+            top: 20px;
+            left: 36px;
+            font-family: var(--sans);
+            font-size: 0.56rem;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            color: var(--ink-mute);
+        }
+
+        /* 图版页码条（装饰） */
+        .map-plate::after {
+            content: "SHEET 01 · LOTIA · SCALE 1 : 12 000 000";
+            position: absolute;
+            right: 36px;
+            bottom: 15px;
+            left: 36px;
+            padding-top: 9px;
+            border-top: 1px solid var(--rule-strong);
+            font-family: var(--sans);
+            font-size: 0.55rem;
+            letter-spacing: 0.22em;
+            color: var(--ink-mute);
+            text-align: right;
         }
 
         .map-frame {
             position: relative;
             margin: 0;
             padding: 14px;
-            background: var(--ink-950);
-            border: 0;
+            background: var(--paper-hi);
+            border: 1px solid var(--ink-soft);
             border-radius: 0;
-            box-shadow: none;
         }
 
-        .map-frame::before,
+        /* 指北标记（装饰） */
+        .map-frame::before {
+            content: "N";
+            position: absolute;
+            top: -37px;
+            right: 0;
+            display: grid;
+            place-items: center;
+            width: 22px;
+            height: 22px;
+            border: 1px solid var(--rule-strong);
+            border-radius: 50%;
+            font-family: var(--sans);
+            font-size: 0.52rem;
+            font-weight: 600;
+            letter-spacing: 0;
+            color: var(--ink-soft);
+            background: var(--paper-lo);
+        }
+
+        /* 比例尺（装饰） */
         .map-frame::after {
-            content: none;
+            content: "";
+            position: absolute;
+            bottom: 4px;
+            left: 16px;
+            width: 148px;
+            height: 5px;
+            border: 1px solid var(--ink-soft);
+            background-image: repeating-linear-gradient(90deg,
+                    var(--ink-soft) 0 18px,
+                    transparent 18px 36px);
         }
 
         #historyMap {
             display: block;
             width: 100%;
             height: auto;
-            background: var(--ink-900);
+            background: var(--paper-hi);
             border: 0;
-            box-shadow: 0 0 0 1px rgba(236, 231, 220, 0.16);
+            box-shadow: none;
         }
 
-        /* ============================== 世界概览 ============================== */
+        /* ============================== 地理志 ============================== */
 
         .overview__head {
             position: relative;
@@ -430,19 +563,18 @@
             align-items: baseline;
             justify-content: space-between;
             gap: 24px;
-            padding-bottom: 22px;
-            margin-bottom: 34px;
+            padding-bottom: 18px;
+            margin-bottom: 32px;
             border-bottom: 1px solid var(--rule);
         }
 
         .overview__head h2 {
             position: static;
-            z-index: auto;
-            font-size: clamp(1.85rem, 3.2vw, 2.45rem);
-            letter-spacing: 0.045em;
+            font-size: clamp(1.8rem, 3vw, 2.35rem);
+            letter-spacing: 0.06em;
         }
 
-        /* 原文件中的第二个同名标题完整保留，以“书眉”形式呈现 */
+        /* 原文件中的第二个“世界概览”完整保留，作为书眉 */
         .overview__head h2 + h2 {
             position: static;
             margin: 0;
@@ -450,37 +582,38 @@
             transform: none;
             white-space: nowrap;
             font-family: var(--sans);
-            font-size: 0.66rem;
+            font-size: 0.6rem;
             font-weight: 600;
-            letter-spacing: 0.3em;
-            color: var(--graphite-40);
-            opacity: 0.7;
+            letter-spacing: 0.28em;
+            color: var(--ink-mute);
         }
 
         .overview__text {
             margin: 0;
-            font-size: 0.94rem;
-            line-height: 2.05;
-            letter-spacing: 0.012em;
+            font-family: var(--serif);
+            font-size: 0.93rem;
+            line-height: 2.1;
+            letter-spacing: 0.015em;
             text-align: justify;
             white-space: pre-line;
-            color: #333a41;
+            color: #3a3325;
             column-count: 1;
         }
 
         /* ============================== 表单基元 ============================== */
 
         .field {
-            margin-bottom: 22px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.71rem;
+            margin-bottom: 0.45rem;
+            font-family: var(--sans);
+            font-size: 0.66rem;
             font-weight: 600;
-            letter-spacing: 0.18em;
-            color: var(--graphite-40);
+            letter-spacing: 0.2em;
+            color: var(--ink-mute);
         }
 
         input[type="text"],
@@ -488,12 +621,12 @@
         textarea,
         select {
             width: 100%;
-            padding: 0.7rem 0.85rem;
+            padding: 0.66rem 0.8rem;
             font-family: var(--sans);
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             line-height: 1.7;
-            color: var(--graphite);
-            background: var(--paper-raised);
+            color: var(--ink);
+            background: rgba(248, 244, 233, 0.72);
             border: 1px solid var(--rule-strong);
             border-radius: 0;
             box-shadow: none;
@@ -504,7 +637,7 @@
         input[type="password"]:hover,
         textarea:hover,
         select:hover {
-            border-color: var(--graphite-40);
+            border-color: var(--ink-mute);
         }
 
         input[type="text"]:focus,
@@ -512,65 +645,65 @@
         textarea:focus,
         select:focus {
             outline: none;
-            border-color: var(--graphite);
-            background: #fffdf9;
-            box-shadow: 0 0 0 1px var(--graphite);
+            border-color: var(--ink);
+            background: var(--paper-hi);
+            box-shadow: 0 0 0 3px rgba(62, 85, 103, 0.14);
         }
 
         textarea {
-            min-height: 180px;
+            min-height: 178px;
             resize: vertical;
         }
 
         select[multiple] {
-            height: 134px;
-            padding: 0.3rem;
+            height: 132px;
+            padding: 0.28rem;
             overflow-y: auto;
             cursor: pointer;
         }
 
         select[multiple] option {
-            padding: 0.48rem 0.55rem;
-            color: var(--graphite);
+            padding: 0.46rem 0.52rem;
+            color: var(--ink);
         }
 
         select[multiple] option:checked {
-            background-color: var(--ink-800);
+            background-color: var(--ink);
             background-image: none;
-            color: var(--paper);
+            color: var(--paper-hi);
         }
 
         .form-actions {
             display: flex;
             justify-content: flex-end;
-            gap: 14px;
-            margin-top: 6px;
+            gap: 12px;
+            margin-top: 4px;
         }
 
         /* ============================== 按钮 ============================== */
 
         button {
             font-family: var(--sans);
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            letter-spacing: 0.16em;
+            letter-spacing: 0.18em;
             line-height: 1.5;
-            padding: 0.76rem 1.35rem;
+            padding: 0.72rem 1.3rem;
             border-radius: 0;
-            border: 1px solid var(--graphite);
+            border: 1px solid var(--ink);
             background: transparent;
-            color: var(--graphite);
+            color: var(--ink);
             cursor: pointer;
             transition:
-                background-color 0.2s var(--ease),
-                color 0.2s var(--ease),
-                border-color 0.2s var(--ease);
+                background-color 0.18s var(--ease),
+                color 0.18s var(--ease),
+                border-color 0.18s var(--ease);
         }
 
         button:hover {
-            background: var(--graphite);
-            border-color: var(--graphite);
-            color: var(--paper);
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--paper-hi);
             box-shadow: none;
         }
 
@@ -579,25 +712,25 @@
         }
 
         button:focus-visible {
-            outline: 1px solid var(--ink-800);
+            outline: 1px solid var(--blue);
             outline-offset: 3px;
         }
 
         form button[type="submit"],
         #loadMyStories {
-            background: var(--ink-800);
-            border-color: var(--ink-800);
-            color: #f3efe5;
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--paper-hi);
         }
 
         form button[type="submit"]:hover,
         #loadMyStories:hover {
-            background: var(--ink-950);
-            border-color: var(--ink-950);
-            color: #fffdf7;
+            background: var(--ink-soft);
+            border-color: var(--ink-soft);
+            color: var(--paper-hi);
         }
 
-        /* ============================== 账户 ============================== */
+        /* ============================== 阅览登记 ============================== */
 
         .account__grid {
             display: grid;
@@ -618,18 +751,18 @@
         }
 
         .account__card h2 {
-            padding-bottom: 14px;
-            margin: 0 0 24px;
-            font-size: 1.14rem;
-            letter-spacing: 0.06em;
+            padding-bottom: 12px;
+            margin: 0 0 22px;
+            font-size: 1.08rem;
+            letter-spacing: 0.08em;
             border-bottom: 1px solid var(--rule);
         }
 
         .account__footer {
             display: flex;
             justify-content: flex-end;
-            margin-top: 42px;
-            padding-top: 22px;
+            margin-top: 40px;
+            padding-top: 20px;
             border-top: 1px solid var(--rule);
         }
 
@@ -638,25 +771,25 @@
             border: 0;
             border-bottom: 1px solid var(--rule-strong);
             background: none;
-            color: var(--graphite-60);
-            font-size: 0.7rem;
-            letter-spacing: 0.18em;
+            color: var(--ink-mute);
+            font-size: 0.66rem;
+            letter-spacing: 0.2em;
         }
 
         .account__footer button:hover {
             background: none;
-            border-bottom-color: var(--graphite);
-            color: var(--graphite);
+            border-bottom-color: var(--rust);
+            color: var(--rust);
         }
 
         #loginMessage,
         #registerMessage,
         #storyMessage,
         #userInfo {
-            margin: 18px 0 0;
-            font-size: 0.82rem;
+            margin: 16px 0 0;
+            font-size: 0.8rem;
             line-height: 1.75;
-            color: var(--graphite-60);
+            color: var(--ink-soft);
         }
 
         #loginMessage:empty,
@@ -670,17 +803,17 @@
         #registerMessage:not(:empty),
         #storyMessage:not(:empty),
         #userInfo:not(:empty) {
-            padding: 4px 0 4px 14px;
-            border-left: 2px solid var(--brass-soft);
+            padding: 4px 0 4px 13px;
+            border-left: 2px solid var(--copper);
             background: none;
         }
 
-        /* ============================== 投稿 ============================== */
+        /* ============================== 文稿呈缴 ============================== */
 
         .story-form {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 0 44px;
+            gap: 0 42px;
         }
 
         .field--full {
@@ -688,62 +821,60 @@
         }
 
         .story-form .form-actions {
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        /* ============================== 我的故事 ============================== */
+        /* ============================== 我的存档 ============================== */
 
         #myStories:empty {
             display: none;
         }
 
         #myStories > div {
-            padding: 24px 0;
+            padding: 22px 0;
             border-top: 1px solid var(--rule);
         }
 
         #myStories > div:first-child {
-            padding-top: 4px;
+            padding-top: 2px;
             border-top: 0;
         }
 
         #myStories > div > h3 {
-            margin: 0 0 0.5rem;
+            margin: 0 0 0.45rem;
             font-family: var(--serif);
-            font-size: 1.12rem;
+            font-size: 1.08rem;
             font-weight: 600;
-            line-height: 1.55;
-            letter-spacing: 0.045em;
-            color: var(--graphite);
+            line-height: 1.6;
+            letter-spacing: 0.05em;
+            color: var(--ink);
         }
 
         #myStories > div > p {
             margin: 0.2rem 0;
-            font-size: 0.87rem;
-            line-height: 1.9;
-            color: #3d444b;
+            font-family: var(--serif);
+            font-size: 0.88rem;
+            line-height: 1.95;
+            color: #3a3325;
         }
 
         #myStories > div > p:nth-of-type(1),
         #myStories > div > p:nth-of-type(2) {
             display: inline-block;
-            margin: 0 1.4rem 0.5rem 0;
-            font-size: 0.68rem;
-            letter-spacing: 0.12em;
-            color: var(--graphite-40);
-        }
-
-        #myStories > div > p:nth-of-type(3) {
-            color: #3a4148;
+            margin: 0 1.3rem 0.5rem 0;
+            font-family: var(--sans);
+            font-size: 0.64rem;
+            letter-spacing: 0.14em;
+            color: var(--ink-mute);
         }
 
         #myStories > div > button {
-            margin: 16px 10px 0 0;
-            padding: 0.55rem 1rem;
-            font-size: 0.68rem;
+            margin: 14px 10px 0 0;
+            padding: 0.52rem 0.95rem;
+            font-size: 0.64rem;
         }
 
-        /* ============================== 审核中心（脚本生成） ============================== */
+        /* ============================== 审核厅（脚本生成） ============================== */
 
         #adminPanel {
             position: relative;
@@ -751,52 +882,48 @@
             width: calc(100% - 64px) !important;
             max-width: 1116px !important;
             margin: 0 auto !important;
-            padding: 48px 0 88px !important;
+            padding: 46px 0 76px !important;
             border: 0 !important;
-            border-top: 1px solid var(--rule) !important;
+            border-top: 1px solid var(--rule-strong) !important;
             border-radius: 0 !important;
             background: none !important;
-            color: var(--graphite);
+            color: var(--ink);
             box-shadow: none !important;
         }
 
         #adminPanel > h2 {
             display: block;
-            margin: 0 0 24px;
-            padding: 0 0 20px;
+            margin: 0 0 22px;
+            padding: 0 0 18px;
             border-bottom: 1px solid var(--rule);
             font-family: var(--serif);
-            font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+            font-size: clamp(1.42rem, 2.2vw, 1.75rem);
             font-weight: 600;
-            letter-spacing: 0.045em;
-            color: var(--graphite);
-        }
-
-        #adminPanel > h2::before {
-            content: none;
+            letter-spacing: 0.06em;
+            color: var(--ink);
         }
 
         #adminPanel > button {
-            border: 1px solid var(--graphite);
+            border: 1px solid var(--ink);
             background: transparent;
-            color: var(--graphite);
+            color: var(--ink);
         }
 
         #adminPanel > button:hover {
-            background: var(--graphite);
-            border-color: var(--graphite);
-            color: var(--paper);
+            background: var(--ink);
+            border-color: var(--ink);
+            color: var(--paper-hi);
         }
 
         #adminPanel > div {
-            margin-top: 26px;
-            color: var(--graphite-60);
-            font-size: 0.9rem;
+            margin-top: 24px;
+            color: var(--ink-mute);
+            font-size: 0.88rem;
         }
 
         #adminPanel > div > div {
             margin-top: 0 !important;
-            padding: 26px 0 !important;
+            padding: 24px 0 !important;
             border: 0 !important;
             border-top: 1px solid var(--rule) !important;
             border-radius: 0 !important;
@@ -804,83 +931,80 @@
         }
 
         #adminPanel > div > div > h3 {
-            margin: 0 0 0.55rem;
+            margin: 0 0 0.5rem;
             font-family: var(--serif);
-            font-size: 1.1rem;
+            font-size: 1.06rem;
             font-weight: 600;
-            letter-spacing: 0.045em;
-            color: var(--graphite);
+            letter-spacing: 0.05em;
+            color: var(--ink);
         }
 
         #adminPanel > div > div > p {
-            margin: 0.32rem 0;
-            font-size: 0.86rem;
-            line-height: 1.85;
-            color: #3d444b;
+            margin: 0.3rem 0;
+            font-family: var(--serif);
+            font-size: 0.87rem;
+            line-height: 1.9;
+            color: #3a3325;
         }
 
-        #adminPanel > div > div > p:nth-of-type(1) {
-            font-size: 0.7rem;
-            letter-spacing: 0.1em;
-            color: var(--graphite-40);
-        }
-
+        #adminPanel > div > div > p:nth-of-type(1),
         #adminPanel > div > div > p:nth-of-type(3) {
-            font-size: 0.7rem;
-            letter-spacing: 0.08em;
-            color: var(--graphite-40);
+            font-family: var(--sans);
+            font-size: 0.64rem;
+            letter-spacing: 0.12em;
+            color: var(--ink-mute);
         }
 
         #adminPanel textarea {
-            background: var(--paper-raised);
+            background: rgba(248, 244, 233, 0.72);
             border: 1px solid var(--rule-strong);
-            color: var(--graphite);
-            font-size: 0.88rem;
+            color: var(--ink);
+            font-size: 0.86rem;
         }
 
         #adminPanel textarea::placeholder {
-            color: var(--graphite-40);
-            font-size: 0.8rem;
+            color: var(--ink-mute);
+            font-size: 0.78rem;
             letter-spacing: 0.08em;
         }
 
         #adminPanel textarea:focus {
             outline: none;
-            border-color: var(--graphite);
-            background: #fffdf9;
-            box-shadow: 0 0 0 1px var(--graphite);
+            border-color: var(--ink);
+            background: var(--paper-hi);
+            box-shadow: 0 0 0 3px rgba(62, 85, 103, 0.14);
         }
 
         #adminPanel > div > div > button {
-            padding: 0.58rem 1.05rem;
-            font-size: 0.7rem;
+            padding: 0.55rem 1rem;
+            font-size: 0.66rem;
         }
 
         #adminPanel > div > div > button:nth-of-type(1) {
-            background: var(--ink-800);
-            border-color: var(--ink-800);
-            color: #f3efe5;
+            background: var(--olive);
+            border-color: var(--olive);
+            color: var(--paper-hi);
         }
 
         #adminPanel > div > div > button:nth-of-type(1):hover {
-            background: var(--ink-950);
-            border-color: var(--ink-950);
-            color: #fffdf7;
+            background: #4d4f36;
+            border-color: #4d4f36;
+            color: var(--paper-hi);
         }
 
         #adminPanel > div > div > button:nth-of-type(2) {
             background: transparent;
-            border-color: rgba(133, 82, 71, 0.5);
-            color: #855247;
+            border-color: rgba(123, 74, 57, 0.55);
+            color: var(--rust);
         }
 
         #adminPanel > div > div > button:nth-of-type(2):hover {
-            background: #855247;
-            border-color: #855247;
-            color: #f8f3ee;
+            background: var(--rust);
+            border-color: var(--rust);
+            color: var(--paper-hi);
         }
 
-        /* ============================== 公开故事（脚本生成） ============================== */
+        /* ============================== 公开档案（脚本生成） ============================== */
 
         #publicStories {
             position: relative;
@@ -888,40 +1012,37 @@
             width: calc(100% - 64px) !important;
             max-width: 1116px !important;
             margin: 0 auto !important;
-            padding: 48px 0 104px !important;
+            padding: 46px 0 96px !important;
             border: 0 !important;
-            border-top: 1px solid var(--rule) !important;
+            border-top: 1px solid var(--rule-strong) !important;
             border-radius: 0 !important;
             background: none !important;
-            color: var(--graphite);
+            color: var(--ink);
             box-shadow: none !important;
         }
 
         #publicStories > h2 {
             display: block;
-            margin: 0 0 26px;
-            padding: 0 0 20px;
+            margin: 0 0 24px;
+            padding: 0 0 18px;
             border-bottom: 1px solid var(--rule);
             font-family: var(--serif);
-            font-size: clamp(1.5rem, 2.4vw, 1.9rem);
+            font-size: clamp(1.42rem, 2.2vw, 1.75rem);
             font-weight: 600;
-            letter-spacing: 0.045em;
-            color: var(--graphite);
-        }
-
-        #publicStories > h2::before {
-            content: none;
+            letter-spacing: 0.06em;
+            color: var(--ink);
         }
 
         #publicStories > div {
+            font-family: var(--serif);
             font-size: 0.88rem;
             line-height: 1.9;
-            color: var(--graphite-60);
+            color: var(--ink-mute);
         }
 
         #publicStories article {
             margin-top: 0 !important;
-            padding: 26px 0 !important;
+            padding: 24px 0 !important;
             border: 0 !important;
             border-top: 1px solid var(--rule) !important;
             border-radius: 0 !important;
@@ -932,26 +1053,27 @@
         }
 
         #publicStories article h3 {
-            margin: 0 0 0.55rem;
+            margin: 0 0 0.5rem;
             font-family: var(--serif);
-            font-size: 1.14rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            line-height: 1.55;
-            letter-spacing: 0.045em;
-            color: var(--graphite);
+            line-height: 1.6;
+            letter-spacing: 0.05em;
+            color: var(--ink);
         }
 
         #publicStories article p {
-            margin: 0.3rem 0 0;
+            margin: 0.28rem 0 0;
+            font-family: var(--serif);
             font-size: 0.89rem;
             line-height: 1.95;
-            color: #3d444b;
+            color: #3a3325;
         }
 
         #publicStories article button {
-            margin-top: 18px;
-            padding: 0.58rem 1rem;
-            font-size: 0.68rem;
+            margin-top: 16px;
+            padding: 0.52rem 0.95rem;
+            font-size: 0.64rem;
         }
 
         /* ============================== 响应式 ============================== */
@@ -959,24 +1081,33 @@
         @media (min-width: 1080px) {
             .overview__text {
                 column-count: 2;
-                column-gap: 56px;
+                column-gap: 54px;
                 column-rule: 1px solid var(--rule);
             }
         }
 
         @media (max-width: 1000px) {
             .hero__inner {
-                padding: 54px 24px 50px;
-                column-gap: 32px;
+                padding: 46px 24px 44px;
             }
 
             .archive {
-                padding: 0 24px 104px;
+                padding: 0 24px 100px;
             }
 
             .map-plate {
                 margin-right: -24px;
                 margin-left: -24px;
+                padding: 50px 26px 56px;
+            }
+
+            .map-plate::before {
+                left: 26px;
+            }
+
+            .map-plate::after {
+                right: 26px;
+                left: 26px;
             }
 
             .account__grid {
@@ -989,8 +1120,8 @@
 
             .account__card + .account__card {
                 padding-left: 0;
-                margin-top: 42px;
-                padding-top: 38px;
+                margin-top: 40px;
+                padding-top: 36px;
                 border-left: 0;
                 border-top: 1px solid var(--rule);
             }
@@ -1012,8 +1143,7 @@
         @media (max-width: 780px) {
             .era-panel {
                 grid-template-columns: 1fr;
-                row-gap: 0;
-                padding: 38px 0 26px;
+                padding-bottom: 24px;
             }
 
             .era-panel__head {
@@ -1024,13 +1154,13 @@
             .era-current {
                 grid-column: 1;
                 grid-row: 2;
-                margin-top: 24px;
+                margin-top: 22px;
             }
 
             #eraDescription {
                 grid-column: 1;
                 grid-row: 3;
-                margin-top: 12px;
+                margin-top: 10px;
             }
 
             .select-wrap {
@@ -1047,92 +1177,130 @@
                 font-size: 15px;
             }
 
-            .hero__inner {
-                padding: 40px 18px 38px;
-                column-gap: 18px;
+            .hero::before {
+                letter-spacing: 0.3em;
+                text-indent: 0.3em;
+                font-size: 0.5rem;
             }
 
-            .hero__inner::before {
-                padding-bottom: 20px;
-                margin-bottom: 30px;
-                letter-spacing: 0.42em;
+            .hero__inner {
+                padding: 38px 18px 36px;
             }
 
             .hero h1 {
-                margin-bottom: 20px;
-                font-size: clamp(1.7rem, 7vw, 2.3rem);
-                letter-spacing: 0.03em;
+                font-size: clamp(1.62rem, 7vw, 2.15rem);
+                letter-spacing: 0.06em;
+            }
+
+            .hero h1::after {
+                width: 96px;
+                margin-top: 20px;
             }
 
             .hero__sub {
-                font-size: 0.86rem;
-                letter-spacing: 0.04em;
+                font-size: 0.84rem;
             }
 
-            .hero__sub::before {
-                width: 22px;
+            .hero__sub::before,
+            .hero__sub::after {
+                width: 18px;
             }
 
             .hero__status {
-                width: 100%;
+                gap: 14px;
                 margin-top: 26px;
-                margin-left: 0;
-                padding-top: 18px;
-                justify-content: space-between;
-                gap: 16px;
-                border-top: 1px solid var(--rule-ink);
             }
 
             .archive {
-                padding: 0 16px 76px;
+                padding: 0 16px 72px;
             }
 
             .archive > * + * {
-                margin-top: 64px;
+                margin-top: 60px;
+            }
+
+            .archive > .panel:first-child {
+                padding-top: 38px;
             }
 
             .panel {
-                padding-top: 34px;
+                padding-top: 32px;
             }
 
             .map-plate {
                 margin-right: -16px;
                 margin-left: -16px;
+                padding: 44px 14px 52px;
+            }
+
+            .era-panel + .map-plate {
+                margin-top: 26px;
+            }
+
+            .map-plate::before {
+                left: 14px;
+                top: 16px;
+                font-size: 0.5rem;
+                letter-spacing: 0.22em;
+            }
+
+            .map-plate::after {
+                right: 14px;
+                left: 14px;
+                font-size: 0.5rem;
+                letter-spacing: 0.14em;
             }
 
             .map-frame {
                 padding: 8px;
             }
 
+            .map-frame::before {
+                top: -30px;
+                width: 20px;
+                height: 20px;
+                font-size: 0.48rem;
+            }
+
+            .map-frame::after {
+                left: 10px;
+                bottom: 2px;
+                width: 108px;
+                height: 3px;
+                background-image: repeating-linear-gradient(90deg,
+                        var(--ink-soft) 0 14px,
+                        transparent 14px 28px);
+            }
+
             .overview__head {
-                padding-bottom: 18px;
-                margin-bottom: 26px;
+                padding-bottom: 16px;
+                margin-bottom: 24px;
             }
 
             .overview__head h2 {
-                font-size: 1.6rem;
+                font-size: 1.55rem;
             }
 
             .overview__head h2 + h2 {
-                font-size: 0.62rem;
-                letter-spacing: 0.24em;
+                font-size: 0.56rem;
+                letter-spacing: 0.22em;
             }
 
             .overview__text {
-                font-size: 0.92rem;
-                line-height: 1.98;
+                font-size: 0.91rem;
+                line-height: 2.02;
             }
 
             .account__footer {
-                margin-top: 34px;
-            }
-
-            .form-actions button {
-                width: 100%;
+                margin-top: 32px;
             }
 
             .form-actions {
                 flex-direction: column;
+            }
+
+            .form-actions button {
+                width: 100%;
             }
 
             input[type="text"],
@@ -1144,7 +1312,7 @@
 
             select[multiple] {
                 height: auto;
-                min-height: 126px;
+                min-height: 124px;
             }
 
             #adminPanel,
@@ -1153,15 +1321,15 @@
             }
 
             #adminPanel {
-                padding-bottom: 64px !important;
+                padding-bottom: 60px !important;
             }
 
             #adminPanel > div > div {
-                padding: 22px 0 !important;
+                padding: 20px 0 !important;
             }
 
             #publicStories article {
-                padding: 22px 0 !important;
+                padding: 20px 0 !important;
             }
         }
 
