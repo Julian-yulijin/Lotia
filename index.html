@@ -219,7 +219,7 @@ registerForm.addEventListener("submit", async function(event) {
     const password = document.getElementById("registerPassword").value;
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/register", {
+        const response = await fetch("https://surrey-benefit-checked-nutrition.trycloudflare.com/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -272,8 +272,8 @@ storyForm.addEventListener("submit", async function(event) {
     // 根据是否正在编辑，决定提交新故事还是新版本
     
 const url = editingStoryId === null
-    ? "http://127.0.0.1:8000/stories"
-    : "http://127.0.0.1:8000/stories/" + editingStoryId + "/versions";
+    ? "https://surrey-benefit-checked-nutrition.trycloudflare.com/stories"
+    : "https://surrey-benefit-checked-nutrition.trycloudflare.com/stories/" + editingStoryId + "/versions";
 
 try {
     const response = await fetch(url, {
@@ -329,7 +329,7 @@ loadMyStoriesButton.addEventListener("click", async function() {
 
     try {
         const response = await fetch(
-            "http://127.0.0.1:8000/my-stories",
+            "https://surrey-benefit-checked-nutrition.trycloudflare.com/my-stories",
             {
                 method: "GET",
                 headers: {
@@ -384,7 +384,7 @@ historyButton.textContent = "查看版本历史";
 historyButton.addEventListener("click", async function() {
     try {
         const response = await fetch(
-            "http://127.0.0.1:8000/my-stories/" +
+            "https://surrey-benefit-checked-nutrition.trycloudflare.com/my-stories/" +
             story.story_id + "/history",
             {
                 method: "GET",
@@ -462,7 +462,7 @@ myStoriesContainer.appendChild(storyItem);
 });
 
 async function getUserInfo() {
-    const response = await fetch("http://127.0.0.1:8000/me", {
+    const response = await fetch("https://surrey-benefit-checked-nutrition.trycloudflare.com/me", {
         headers: {
             "Authorization": `Bearer ${accessToken}`
         }
@@ -507,7 +507,7 @@ eraSelect.addEventListener("change", function() {
 const connectBackend = document.getElementById("connectBackend");
 
 connectBackend.addEventListener("click", function() {
-    fetch("http://127.0.0.1:8000/")
+    fetch("https://surrey-benefit-checked-nutrition.trycloudflare.com/")
         .then(response => response.json())
         .then(data => {
             document.getElementById("backendMessage").textContent = data.message;
@@ -555,7 +555,7 @@ loadPendingButton.addEventListener("click", async function() {
 
     try {
         const response = await fetch(
-            "http://127.0.0.1:8000/admin/pending-stories",
+            "https://surrey-benefit-checked-nutrition.trycloudflare.com/admin/pending-stories",
             {
                 method: "GET",
                 headers: {
@@ -625,7 +625,7 @@ approveButton.addEventListener("click", async function() {
 
     try {
         const approveResponse = await fetch(
-            "http://127.0.0.1:8000/admin/reviews/" +
+            "https://surrey-benefit-checked-nutrition.trycloudflare.com/admin/reviews/" +
             story.version_id + "/approve",
             {
                 method: "POST",
@@ -685,7 +685,7 @@ rejectButton.addEventListener("click", async function() {
 
     try {
         const rejectResponse = await fetch(
-            "http://127.0.0.1:8000/admin/reviews/" +
+            "https://surrey-benefit-checked-nutrition.trycloudflare.com/admin/reviews/" +
             story.version_id + "/reject",
             {
                 method: "POST",
@@ -755,7 +755,7 @@ document.body.appendChild(publicStoriesSection);
 async function loadPublicStories() {
     try {
         const response = await fetch(
-            "http://127.0.0.1:8000/stories"
+            "https://surrey-benefit-checked-nutrition.trycloudflare.com/stories"
         );
 
         const stories = await response.json();
